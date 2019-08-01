@@ -2,19 +2,11 @@ const express = require('express')
 const app = express()
 const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
+const Book = require("./models/book")
 
 mongoose.connect("mongodb://localhost/book_talk", { useNewUrlParser: true })
 app.use(bodyParser.urlencoded({extended: true}))
 app.set("view engine", "ejs") 
-
-const bookSchema = new mongoose.Schema({
-    title: String,
-    author: String,
-    image: String,
-    synopsis: String  
-})
-
-const Book = mongoose.model("Book", bookSchema)
 
 app.get("/", (req, res) => {
     res.render("landing")
