@@ -44,7 +44,7 @@ app.get("/books", (req, res) => {
     })
 })
 
-app.post("/books", (req, res) => {
+app.post("/books", isLoggedIn, (req, res) => {
     const title = req.body.title 
     const author = req.body.author 
     const image = req.body.image 
@@ -59,7 +59,7 @@ app.post("/books", (req, res) => {
     })
 }) 
 
-app.get("/books/new", (req, res) => {
+app.get("/books/new", isLoggedIn, (req, res) => {
     res.render("new.ejs")
 })
 
@@ -95,6 +95,18 @@ app.get("/login", (req, res) => {
 })
 
 app.post("/login", passport.authenticate("local", {successRedirect: "/books", failureRedirect: "/login"}))
+
+app.get("/logout", (req, res) => {
+    req.logOut()
+    res.redirect("/books") 
+})
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()){
+        return next() 
+    }
+    res.redirect("/login") 
+}
 
 app.listen(port, () => {
     console.log(`The BookTalk server has started on port ${port}`)
