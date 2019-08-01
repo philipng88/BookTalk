@@ -90,6 +90,12 @@ app.post("/register", (req, res) => {
     })
 })
 
+app.get("/login", (req, res) => {
+    res.render("login") 
+})
+
+app.post("/login", passport.authenticate("local", {successRedirect: "/books", failureRedirect: "/login"}))
+
 app.listen(port, () => {
     console.log(`The BookTalk server has started on port ${port}`)
 })
