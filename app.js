@@ -1,13 +1,34 @@
+require('dotenv').config() 
 const express = require('express')
+const helmet = require('helmet')
 const app = express()
 const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
+const passport = require("passport")
+const LocalStrategy = require("passport-local")
+
+const User = require("./models/user")
 const Book = require("./models/book")
+
+const port = parseInt(process.env.PORT) 
 
 mongoose.connect("mongodb://localhost/book_talk", { useNewUrlParser: true })
 app.use(bodyParser.urlencoded({extended: true}))
 app.set("view engine", "ejs") 
 app.use(express.static(__dirname + "/public")) 
+app.use(helmet())
+
+// PASSPORT CONFIGURATION
+app.use(require("express-session")({
+    secret: process.env.EXPRESS_SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new LocalStrategy(User.authenticate())) 
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
 
 app.get("/", (req, res) => {
     res.render("landing")
@@ -52,6 +73,23 @@ app.get("/books/:id", (req, res) => {
     }) 
 })
 
-app.listen(3000, () => {
-    console.log("The BookTalk server has started")
+app.get("/register", (req, res) => {
+    res.render("register") 
+})
+
+app.post("/register", (req, res) => {
+    const newUser = new User({username: req.body.username})
+    User.register(newUser, req.body.password, (err, user) => {
+        if (err) {
+            console.log(err)
+            return res.render("register")
+        }
+        passport.authenticate("local")(req, res, () => {
+            res.redirect("/books") 
+        })
+    })
+})
+
+app.listen(port, () => {
+    console.log(`The BookTalk server has started on port ${port}`)
 })
