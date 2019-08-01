@@ -1,28 +1,32 @@
 const express = require('express')
 const app = express()
 const bodyParser = require("body-parser")
+const mongoose = require("mongoose")
 
+mongoose.connect("mongodb://localhost/book_talk", { useNewUrlParser: true })
 app.use(bodyParser.urlencoded({extended: true}))
 app.set("view engine", "ejs") 
 
-const books = [
-    {title: "Fahrenheit 451", author: "Ray Bradbury", image: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1383718290l/13079982.jpg"},
-    {title: "A Tale of Two Cities", author: "Charles Dickens", image: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1344922523l/1953.jpg"},
-    {title: "Pride and Prejudice", author: "Jane Austen", image: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1320399351l/1885.jpg"},
-    {title: "Fahrenheit 451", author: "Ray Bradbury", image: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1383718290l/13079982.jpg"},
-    {title: "A Tale of Two Cities", author: "Charles Dickens", image: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1344922523l/1953.jpg"},
-    {title: "Pride and Prejudice", author: "Jane Austen", image: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1320399351l/1885.jpg"},
-    {title: "Fahrenheit 451", author: "Ray Bradbury", image: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1383718290l/13079982.jpg"},
-    {title: "A Tale of Two Cities", author: "Charles Dickens", image: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1344922523l/1953.jpg"},
-    {title: "Pride and Prejudice", author: "Jane Austen", image: "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1320399351l/1885.jpg"}
-]
+const bookSchema = new mongoose.Schema({
+    title: String,
+    author: String,
+    image: String 
+})
+
+const Book = mongoose.model("Book", bookSchema)
 
 app.get("/", (req, res) => {
     res.render("landing")
 })
 
 app.get("/books", (req, res) => {
-    res.render("books", {books:books}) 
+    Book.find({}, (err, allBooks) => {
+        if (err) {
+            console.log(err)
+        } else {
+            res.render("books", {books:allBooks}) 
+        }
+    })
 })
 
 app.post("/books", (req, res) => {
@@ -30,8 +34,13 @@ app.post("/books", (req, res) => {
     const author = req.body.author 
     const image = req.body.image 
     const newBook = {title:title, author:author, image:image}
-    books.push(newBook)
-    res.redirect("/books")
+    Book.create(newBook, (err, newlyAdded) => {
+        if (err) {
+            console.log(err)
+        } else {
+            res.redirect("/books") 
+        }
+    })
 }) 
 
 app.get("/books/new", (req, res) => {
