@@ -7,6 +7,7 @@ const Book = require("./models/book")
 mongoose.connect("mongodb://localhost/book_talk", { useNewUrlParser: true })
 app.use(bodyParser.urlencoded({extended: true}))
 app.set("view engine", "ejs") 
+app.use(express.static(__dirname + "/public")) 
 
 app.get("/", (req, res) => {
     res.render("landing")
