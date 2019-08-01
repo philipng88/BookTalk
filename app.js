@@ -10,7 +10,8 @@ app.set("view engine", "ejs")
 const bookSchema = new mongoose.Schema({
     title: String,
     author: String,
-    image: String 
+    image: String,
+    synopsis: String  
 })
 
 const Book = mongoose.model("Book", bookSchema)
@@ -24,7 +25,7 @@ app.get("/books", (req, res) => {
         if (err) {
             console.log(err)
         } else {
-            res.render("books", {books:allBooks}) 
+            res.render("index", {books:allBooks}) 
         }
     })
 })
@@ -33,7 +34,8 @@ app.post("/books", (req, res) => {
     const title = req.body.title 
     const author = req.body.author 
     const image = req.body.image 
-    const newBook = {title:title, author:author, image:image}
+    const synopsis = req.body.synopsis
+    const newBook = {title:title, author:author, image:image, synopsis:synopsis}
     Book.create(newBook, (err, newlyAdded) => {
         if (err) {
             console.log(err)
@@ -45,6 +47,16 @@ app.post("/books", (req, res) => {
 
 app.get("/books/new", (req, res) => {
     res.render("new.ejs")
+})
+
+app.get("/books/:id", (req, res) => {
+    Book.findById(req.params.id, (err, foundBook) => {
+        if (err) {
+            console.log(err)
+        } else {
+            res.render("show", {book: foundBook})  
+        }
+    }) 
 })
 
 app.listen(3000, () => {

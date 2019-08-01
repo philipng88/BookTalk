@@ -19,6 +19,9 @@
                         <h3><%= book.title %></h3>
                         <h4><%= book.author %></h4>
                     </div>
+                    <p>
+                        <a href="/books/<%= book._id %>" class="btn btn-primary">More Info</a>
+                    </p>
                 </div>
             </div>
         <% }) %>
