@@ -67,6 +67,7 @@ router.delete("/:id", middleware.checkBookOwnership, (req, res) => {
         if (err) {
             res.redirect("/books")
         } else {
+            req.flash("success", "Book Removed")
             res.redirect("/books") 
         }
     })
