@@ -11,6 +11,7 @@ const flash = require("connect-flash")
 
 const bookRoutes = require("./routes/books")
 const indexRoutes = require("./routes/index")
+const reviewRoutes = require("./routes/reviews")
 
 const User = require("./models/user")
 
@@ -46,7 +47,8 @@ app.use((req, res, next) => {
 })
 
 app.use(indexRoutes)
-app.use("/books", bookRoutes) 
+app.use("/books", bookRoutes)
+app.use("/books/:id/reviews", reviewRoutes) 
 
 app.listen(port, () => {
     console.log(`The BookTalk server has started on port ${port}`)

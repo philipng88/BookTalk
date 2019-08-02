@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const Book = require("../models/book")
+const Review = require("../models/review")
 const middleware = require("../middleware")
 
 router.get("/", (req, res) => {
@@ -37,7 +38,10 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
 })
 
 router.get("/:id", (req, res) => {
-    Book.findById(req.params.id).populate("likes").exec((err, foundBook) => {
+    Book.findById(req.params.id).populate("likes").populate({
+        path: "reviews",
+        options: {sort: {createdAt: -1}} 
+    }).exec((err, foundBook) => {
         if (err) {
             console.log(err)
         } else {
@@ -53,6 +57,7 @@ router.get("/:id/edit", middleware.checkBookOwnership, (req, res) => {
 })
 
 router.put("/:id", middleware.checkBookOwnership, (req, res) => {
+    delete req.body.book.rating
     Book.findByIdAndUpdate(req.params.id, req.body.book, (err, updatedBook) => {
         if (err) {
             res.redirect("/books")
@@ -67,6 +72,14 @@ router.delete("/:id", middleware.checkBookOwnership, (req, res) => {
         if (err) {
             res.redirect("/books")
         } else {
+            // delete all reviews associated with the book
+            Review.remove({"_id": {$in: book.reviews}}, err => {
+                if (err) {
+                    console.log(err)
+                    return res.redirect("/books")
+                }
+            })
+            book.remove() 
             req.flash("success", "Book Removed")
             res.redirect("/books") 
         }

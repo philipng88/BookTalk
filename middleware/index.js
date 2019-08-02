@@ -1,4 +1,5 @@
 const Book = require("../models/book")
+const Review = require("../models/review")
 const middlewareObj = {}
 
 middlewareObj.isLoggedIn = (req, res, next) => {
@@ -24,6 +25,50 @@ middlewareObj.checkBookOwnership = (req, res, next) => {
                 }
             }
         }) 
+    } else {
+        req.flash("error", "Please Log In")
+        res.redirect("back")
+    }
+}
+
+middlewareObj.checkReviewOwnership = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        Review.findById(req.params.review_id, (err, foundReview) => {
+            if (err || !foundReview) {
+                req.flash("error", "Something went wrong...")
+                res.redirect("back") 
+            } else {
+                if (foundReview.reviewer.id.equals(req.user._id)) {
+                    next()
+                } else {
+                    req.flash("error", "You don't have the required permissions for that action")
+                    res.redirect("back")
+                }
+            }
+        })
+    } else {
+        req.flash("error", "Please Log In")
+        res.redirect("back")
+    }
+}
+
+middlewareObj.checkReviewExistence = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        Book.findById(req.params.id).populate("reviews").exec((err, foundBook) => {
+            if (err || !foundBook) {
+                req.flash("error", "Book not found")
+                res.redirect("back")
+            } else {
+                const foundUserReview = foundBook.reviews.some(review => {
+                    return review.reviewer.id.equals(req.user._id)
+                })
+                if (foundUserReview) {
+                    req.flash("error", "You have already written a review for this book")
+                    return res.redirect("/books/" + foundBook._id)
+                }
+                next()
+            }
+        })
     } else {
         req.flash("error", "Please Log In")
         res.redirect("back")

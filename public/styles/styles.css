@@ -19,7 +19,13 @@
 }
 
 .login-form-wrapper,
-.register-form-wrapper {
+.register-form-wrapper,
+.review-wrapper,
+.review-edit-wrapper {
     width: 30%;
     margin: 25px auto;
+}
+
+.checked {
+    color: orange;
 }
