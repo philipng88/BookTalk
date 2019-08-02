@@ -37,7 +37,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
 })
 
 router.get("/:id", (req, res) => {
-    Book.findById(req.params.id, (err, foundBook) => {
+    Book.findById(req.params.id).populate("likes").exec((err, foundBook) => {
         if (err) {
             console.log(err)
         } else {
@@ -70,6 +70,32 @@ router.delete("/:id", middleware.checkBookOwnership, (req, res) => {
             req.flash("success", "Book Removed")
             res.redirect("/books") 
         }
+    })
+})
+
+router.post("/:id/like", middleware.isLoggedIn, (req, res) => {
+    Book.findById(req.params.id, (err, foundBook) => {
+        if (err) {
+            console.log(err) 
+            res.redirect("/books")
+        }
+        const foundUserLike = foundBook.likes.some(like => {
+            return like.equals(req.user._id)
+        })
+        
+        if (foundUserLike) {
+            foundBook.likes.pull(req.user._id)
+        } else {
+            foundBook.likes.push(req.user) 
+        }
+
+        foundBook.save(err => {
+            if (err) {
+                console.log(err)
+                res.redirect("/books")
+            }
+            res.redirect("/books/" + foundBook._id) 
+        })
     })
 })
 

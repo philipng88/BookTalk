@@ -16,6 +16,26 @@
                 <div class="caption-full">
                     <h3><%= book.title %></h3>
                     <h4><%= book.author %></h4>
+                    <div class="book-like-wrapper">
+                        <form action="/books/<%= book._id %>/like" method="POST">
+                            <div class="btn-group">
+                                <% if (currentUser && book.likes.some(like => {
+                                    return like.equals(currentUser._id)
+                                })) { %>
+                                    <button class="btn btn-sm btn-primary">
+                                        <i class="fas fa-thumbs-up"></i> Liked (<%= book.likes.length %>)
+                                    </button>
+                                <% } else { %>
+                                    <button class="btn btn-sm btn-secondary">
+                                        <i class="fas fa-thumbs-up"></i> Like (<%= book.likes.length %>)
+                                    </button>
+                                <% } %>
+                                <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#bookLikes">
+                                    Who liked this book? 
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                     <p><%= book.synopsis %></p>
                     <p><em>Submitted by </em><%= book.creator.username %></p>
                     <% if (currentUser && book.creator.id.equals(currentUser._id)) { %>
@@ -25,6 +45,33 @@
                         </form>
                     <% } %>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="bookLikes" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><i class="fas fa-times"></i></button>
+                <h4 class="modal-title">Book likes: <%= book.likes.length %></h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <tbody>
+                        <% book.likes.forEach(like => { %>
+                            <tr>
+                                <td><span class="badge"><i class="fas fa-user"></i></span> <%= like.username %></td>
+                            </tr>
+                        <% }) %>
+                        <% if (book.likes.length === 0) { %>
+                            <tr>
+                                <td><em>No likes yet </em><i class="fas fa-frown"></i></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

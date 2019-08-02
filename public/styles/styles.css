@@ -13,3 +13,7 @@
 #delete-form {
     display: inline;
 }
+
+.book-like-wrapper {
+    padding-bottom: 10px;
+}
