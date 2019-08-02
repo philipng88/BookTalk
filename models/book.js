@@ -5,6 +5,10 @@ const bookSchema = new mongoose.Schema({
     author: String,
     image: String,
     synopsis: String,
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
     creator: {
         id: {
             type: mongoose.Schema.Types.ObjectId,

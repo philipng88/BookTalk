@@ -37,7 +37,7 @@
                         </form>
                     </div>
                     <p><%= book.synopsis %></p>
-                    <p><em>Submitted by </em><%= book.creator.username %></p>
+                    <p><em>Submitted by </em><%= book.creator.username %>, <%= moment(book.createdAt).fromNow() %></p>
                     <% if (currentUser && book.creator.id.equals(currentUser._id)) { %>
                         <a class="btn btn-xs btn-info" href="/books/<%= book._id %>/edit">Edit</a>
                         <form id="delete-form" action="/books/<%= book._id %>?_method=DELETE" method="POST">
