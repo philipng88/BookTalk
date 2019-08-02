@@ -17,3 +17,9 @@
 .book-like-wrapper {
     padding-bottom: 10px;
 }
+
+.login-form-wrapper,
+.register-form-wrapper {
+    width: 30%;
+    margin: 25px auto;
+}

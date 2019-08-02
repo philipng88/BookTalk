@@ -8,7 +8,7 @@ router.get("/", (req, res) => {
         if (err) {
             console.log(err)
         } else {
-            res.render("books/index", {books:allBooks}) 
+            res.render("books/index", {books: allBooks, page: "books"})  
         }
     })
 })
