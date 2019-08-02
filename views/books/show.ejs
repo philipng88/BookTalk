@@ -18,10 +18,12 @@
                     <h4><%= book.author %></h4>
                     <p><%= book.synopsis %></p>
                     <p><em>Submitted by </em><%= book.creator.username %></p>
-                    <a class="btn btn-xs btn-info" href="/books/<%= book._id %>/edit">Edit</a>
-                    <form id="delete-form" action="/books/<%= book._id %>?_method=DELETE" method="POST">
-                        <button class="btn btn-xs btn-danger">Delete</button>
-                    </form>
+                    <% if (currentUser && book.creator.id.equals(currentUser._id)) { %>
+                        <a class="btn btn-xs btn-info" href="/books/<%= book._id %>/edit">Edit</a>
+                        <form id="delete-form" action="/books/<%= book._id %>?_method=DELETE" method="POST">
+                            <button class="btn btn-xs btn-danger">Delete</button>
+                        </form>
+                    <% } %>
                 </div>
             </div>
         </div>

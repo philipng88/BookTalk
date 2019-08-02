@@ -45,17 +45,13 @@ router.get("/:id", (req, res) => {
     }) 
 })
 
-router.get("/:id/edit", (req, res) => {
+router.get("/:id/edit", checkBookOwnership, (req, res) => {
     Book.findById(req.params.id, (err, foundBook) => {
-        if (err) {
-            res.redirect("/books")
-        } else {
-            res.render("books/edit", {book: foundBook})
-        }
+        res.render("books/edit", {book: foundBook})
     }) 
 })
 
-router.put("/:id", (req, res) => {
+router.put("/:id", checkBookOwnership, (req, res) => {
     Book.findByIdAndUpdate(req.params.id, req.body.book, (err, updatedBook) => {
         if (err) {
             res.redirect("/books")
@@ -65,7 +61,7 @@ router.put("/:id", (req, res) => {
     }) 
 })
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", checkBookOwnership, (req, res) => {
     Book.findByIdAndRemove(req.params.id, err => {
         if (err) {
             res.redirect("/books")
@@ -80,6 +76,24 @@ function isLoggedIn(req, res, next) {
         return next() 
     }
     res.redirect("/login") 
+}
+
+function checkBookOwnership(req, res, next) {
+    if (req.isAuthenticated()) {
+        Book.findById(req.params.id, (err, foundBook) => {
+            if (err) {
+                res.redirect("back")
+            } else {
+                if (foundBook.creator.id.equals(req.user._id)) {
+                    next()
+                } else {
+                    res.redirect("back")
+                }
+            }
+        }) 
+    } else {
+        res.redirect("back")
+    }
 }
 
 module.exports = router 
