@@ -1,4 +1,4 @@
-<% include partials/header %>
+<% include ../partials/header %>
 
 <div class="container">
     <div class="row">
@@ -7,7 +7,7 @@
                 <li class="list-group-item">Info 1</li>
                 <li class="list-group-item">Info 2</li>
                 <li class="list-group-item">Info 3</li>
-                <li class="list-group-item"><a href="/books">Back</a></li>
+                <li class="list-group-item"><a href="/books">All books</a></li> 
             </div>
         </div>
         <div class="col-md-9">
@@ -17,10 +17,12 @@
                     <h3><%= book.title %></h3>
                     <h4><%= book.author %></h4>
                     <p><%= book.synopsis %></p>
+                    <p><em>Submitted by </em><%= book.creator.username %></p>
+                    <a class="btn btn-info" href="/books/<%= book._id %>/edit">Edit</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<% include partials/footer %>
+<% include ../partials/footer %>

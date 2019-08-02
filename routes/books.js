@@ -7,7 +7,7 @@ router.get("/", (req, res) => {
         if (err) {
             console.log(err)
         } else {
-            res.render("index", {books:allBooks}) 
+            res.render("books/index", {books:allBooks}) 
         }
     })
 })
@@ -17,7 +17,11 @@ router.post("/", isLoggedIn, (req, res) => {
     const author = req.body.author 
     const image = req.body.image 
     const synopsis = req.body.synopsis
-    const newBook = {title:title, author:author, image:image, synopsis:synopsis}
+    const creator = {
+        id: req.user._id,
+        username: req.user.username
+    }
+    const newBook = {title:title, author:author, image:image, synopsis:synopsis, creator:creator}
     Book.create(newBook, (err, newlyAdded) => {
         if (err) {
             console.log(err)
@@ -28,7 +32,7 @@ router.post("/", isLoggedIn, (req, res) => {
 }) 
 
 router.get("/new", isLoggedIn, (req, res) => {
-    res.render("new.ejs")
+    res.render("books/new")
 })
 
 router.get("/:id", (req, res) => {
@@ -36,7 +40,27 @@ router.get("/:id", (req, res) => {
         if (err) {
             console.log(err)
         } else {
-            res.render("show", {book: foundBook})  
+            res.render("books/show", {book: foundBook})  
+        }
+    }) 
+})
+
+router.get("/:id/edit", (req, res) => {
+    Book.findById(req.params.id, (err, foundBook) => {
+        if (err) {
+            res.redirect("/books")
+        } else {
+            res.render("books/edit", {book: foundBook})
+        }
+    }) 
+})
+
+router.put("/:id", (req, res) => {
+    Book.findByIdAndUpdate(req.params.id, req.body.book, (err, updatedBook) => {
+        if (err) {
+            res.redirect("/books")
+        } else {
+            res.redirect("/books/" + req.params.id) 
         }
     }) 
 })

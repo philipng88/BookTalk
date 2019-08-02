@@ -1,0 +1,52 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <div class="row">
+        <h1 style="text-align: center;">Add a Book</h1>
+        <div style="width: 30%; margin: 25px auto;">
+            <form action="/books" method="POST">
+                <div class="form-group">
+                    <input
+                        required 
+                        class="form-control" 
+                        type="text" 
+                        name="title" 
+                        placeholder="title"
+                    >
+                </div>
+                <div class="form-group">
+                    <input
+                        required 
+                        class="form-control" 
+                        type="text" 
+                        name="author" 
+                        placeholder="author"
+                    >
+                </div>
+                <div class="form-group">
+                    <input
+                        required 
+                        class="form-control" 
+                        type="text" 
+                        name="image" 
+                        placeholder="image url"
+                        pattern="^https:\/\/i\.gr-assets\.com\/images\/S\/.*"
+                    >
+                    <small class="form-text"><strong>Note:</strong> Only images from <a href="https://goodreads.com/" target="_blank">goodreads.com</a> are accepted</small>
+                </div>
+                <div class="form-group">
+                    <textarea 
+                        class="form-control" 
+                        type="text" 
+                        name="synopsis" 
+                    >synopsis</textarea> 
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-default btn-block btn-primary">Submit</button>
+                </div>
+            </form>
+            <a href="/books">Cancel</a>
+        </div>
+    </div>
+</div>
+<% include ../partials/footer %>
