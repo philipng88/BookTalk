@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const Book = require("../models/book")
+const middleware = require("../middleware")
 
 router.get("/", (req, res) => {
     Book.find({}, (err, allBooks) => {
@@ -12,7 +13,7 @@ router.get("/", (req, res) => {
     })
 })
 
-router.post("/", isLoggedIn, (req, res) => {
+router.post("/", middleware.isLoggedIn, (req, res) => {
     const title = req.body.title 
     const author = req.body.author 
     const image = req.body.image 
@@ -31,7 +32,7 @@ router.post("/", isLoggedIn, (req, res) => {
     })
 }) 
 
-router.get("/new", isLoggedIn, (req, res) => {
+router.get("/new", middleware.isLoggedIn, (req, res) => {
     res.render("books/new")
 })
 
@@ -45,13 +46,13 @@ router.get("/:id", (req, res) => {
     }) 
 })
 
-router.get("/:id/edit", checkBookOwnership, (req, res) => {
+router.get("/:id/edit", middleware.checkBookOwnership, (req, res) => {
     Book.findById(req.params.id, (err, foundBook) => {
         res.render("books/edit", {book: foundBook})
     }) 
 })
 
-router.put("/:id", checkBookOwnership, (req, res) => {
+router.put("/:id", middleware.checkBookOwnership, (req, res) => {
     Book.findByIdAndUpdate(req.params.id, req.body.book, (err, updatedBook) => {
         if (err) {
             res.redirect("/books")
@@ -61,7 +62,7 @@ router.put("/:id", checkBookOwnership, (req, res) => {
     }) 
 })
 
-router.delete("/:id", checkBookOwnership, (req, res) => {
+router.delete("/:id", middleware.checkBookOwnership, (req, res) => {
     Book.findByIdAndRemove(req.params.id, err => {
         if (err) {
             res.redirect("/books")
@@ -70,30 +71,5 @@ router.delete("/:id", checkBookOwnership, (req, res) => {
         }
     })
 })
-
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()){
-        return next() 
-    }
-    res.redirect("/login") 
-}
-
-function checkBookOwnership(req, res, next) {
-    if (req.isAuthenticated()) {
-        Book.findById(req.params.id, (err, foundBook) => {
-            if (err) {
-                res.redirect("back")
-            } else {
-                if (foundBook.creator.id.equals(req.user._id)) {
-                    next()
-                } else {
-                    res.redirect("back")
-                }
-            }
-        }) 
-    } else {
-        res.redirect("back")
-    }
-}
 
 module.exports = router 
