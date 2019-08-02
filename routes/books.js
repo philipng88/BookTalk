@@ -65,6 +65,16 @@ router.put("/:id", (req, res) => {
     }) 
 })
 
+router.delete("/:id", (req, res) => {
+    Book.findByIdAndRemove(req.params.id, err => {
+        if (err) {
+            res.redirect("/books")
+        } else {
+            res.redirect("/books") 
+        }
+    })
+})
+
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()){
         return next() 
