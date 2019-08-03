@@ -17,7 +17,7 @@ middlewareObj.checkBookOwnership = (req, res, next) => {
                 req.flash("error", "Something went wrong...")
                 res.redirect("back")
             } else {
-                if (foundBook.creator.id.equals(req.user._id)) {
+                if (foundBook.creator.id.equals(req.user._id) || req.user.isAdmin) {
                     next()
                 } else {
                     req.flash("error", "You don't have the required permissions for that action")
@@ -38,7 +38,7 @@ middlewareObj.checkReviewOwnership = (req, res, next) => {
                 req.flash("error", "Something went wrong...")
                 res.redirect("back") 
             } else {
-                if (foundReview.reviewer.id.equals(req.user._id)) {
+                if (foundReview.reviewer.id.equals(req.user._id) || req.user.isAdmin) {
                     next()
                 } else {
                     req.flash("error", "You don't have the required permissions for that action")

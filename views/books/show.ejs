@@ -38,7 +38,7 @@
                     </div>
                     <p class="card-text"><%= book.synopsis %></p>
                     <p><em>Submitted by </em><%= book.creator.username %>, <%= moment(book.createdAt).fromNow() %></p>
-                    <% if (currentUser && book.creator.id.equals(currentUser._id)) { %>
+                    <% if (currentUser && (book.creator.id.equals(currentUser._id) || currentUser.isAdmin)) { %>
                         <a class="btn btn-sm btn-info" href="/books/<%= book._id %>/edit">Edit</a>
                         <form id="delete-form" action="/books/<%= book._id %>?_method=DELETE" method="POST">
                             <button class="btn btn-sm btn-danger">Delete</button>
@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <p style="text-align: justify; word-wrap: break-word;"><%= review.text %></p>
-                                    <% if(currentUser && review.reviewer.id.equals(currentUser._id)){ %>
+                                    <% if(currentUser && (review.reviewer.id.equals(currentUser._id) || currentUser.isAdmin)) { %>
                                         <a 
                                             class="btn btn-sm btn-info"
                                             href="/books/<%=book._id %>/reviews/<%=review._id %>/edit"

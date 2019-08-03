@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <p style="text-align: justify; word-wrap: break-word;"><%= review.text %></p>
-                                    <% if (currentUser && review.reviewer.id.equals(currentUser._id)) { %>
+                                    <% if (currentUser && (review.reviewer.id.equals(currentUser._id) || currentUser.isAdmin)) { %>
                                         <a class="btn btn-sm btn-info" href="/books/<%= book._id %>/reviews/<%= review._id %>/edit">Edit</a>
                                         <form
                                             id="delete-form" 
