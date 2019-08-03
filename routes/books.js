@@ -5,13 +5,34 @@ const Review = require("../models/review")
 const middleware = require("../middleware")
 
 router.get("/", (req, res) => {
-    Book.find({}, (err, allBooks) => {
-        if (err) {
-            console.log(err)
-        } else {
-            res.render("books/index", {books: allBooks, page: "books"})  
-        }
-    })
+    const escapeRegex = text => {
+        return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+    }
+    if (req.query.search) {
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi')
+        Book.find({title: regex}, (err, allBooks) => {
+            if (err) {
+                console.log(err)
+            } else {
+                if (allBooks.length === 0) {
+                    req.flash("error", "No books match your search. Please try again.")
+                    return res.redirect("back") 
+                }
+                res.render("books/index", {
+                    books: allBooks, 
+                    page: "books"
+                })  
+            }
+        })
+    } else {
+        Book.find({}, (err, allBooks) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.render("books/index", {books: allBooks, page: "books"})  
+            }
+        })
+    }
 })
 
 router.post("/", middleware.isLoggedIn, (req, res) => {
