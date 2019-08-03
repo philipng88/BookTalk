@@ -5,32 +5,48 @@ const Review = require("../models/review")
 const middleware = require("../middleware")
 
 router.get("/", (req, res) => {
+    let perPage = 8
+    let pageQuery = parseInt(req.query.page)
+    let pageNumber = pageQuery ? pageQuery : 1
     const escapeRegex = text => {
         return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     }
     if (req.query.search) {
         const regex = new RegExp(escapeRegex(req.query.search), 'gi')
-        Book.find({title: regex}, (err, allBooks) => {
-            if (err) {
-                console.log(err)
-            } else {
-                if (allBooks.length === 0) {
-                    req.flash("error", "No books match your search. Please try again.")
-                    return res.redirect("back") 
+        Book.find({title: regex}).sort({'_id': -1}).skip((perPage * pageNumber) - perPage).limit(perPage).exec((err, allBooks) => {
+            Book.countDocuments({title: regex}).exec((err, count) => {
+                if (err) {
+                    console.log(err)
+                    res.redirect("back")
+                } else {
+                    if (allBooks.length < 1) {
+                        req.flash("error", "No books match that search. Please try again")
+                        return res.redirect("back") 
+                    }
+                    res.render("books/index", {
+                        books: allBooks,
+                        current: pageNumber,
+                        pages: Math.ceil(count / perPage),
+                        search: req.query.search 
+                    })
                 }
-                res.render("books/index", {
-                    books: allBooks, 
-                    page: "books"
-                })  
-            }
+            })
         })
     } else {
-        Book.find({}, (err, allBooks) => {
-            if (err) {
-                console.log(err)
-            } else {
-                res.render("books/index", {books: allBooks, page: "books"})  
-            }
+        // use .sort({'_id': -1}) for most recent entries first and .sort({'_id': 1}) for oldest entries first 
+        Book.find({}).sort({'_id': 1}).skip((perPage * pageNumber) - perPage).limit(perPage).exec((err, allBooks) => {
+            Book.countDocuments().exec((err, count) => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    res.render("books/index", {
+                        books: allBooks, 
+                        current: pageNumber, 
+                        pages: Math.ceil(count / perPage),
+                        search: false
+                    })
+                }
+            })
         })
     }
 })
@@ -89,7 +105,7 @@ router.put("/:id", middleware.checkBookOwnership, (req, res) => {
 })
 
 router.delete("/:id", middleware.checkBookOwnership, (req, res) => {
-    Book.findByIdAndRemove(req.params.id, err => {
+    Book.findByIdAndRemove(req.params.id, (err, book) => {
         if (err) {
             res.redirect("/books")
         } else {
@@ -99,10 +115,10 @@ router.delete("/:id", middleware.checkBookOwnership, (req, res) => {
                     console.log(err)
                     return res.redirect("/books")
                 }
+                book.remove() 
+                req.flash("success", "Book Removed")
+                res.redirect("/books") 
             })
-            book.remove() 
-            req.flash("success", "Book Removed")
-            res.redirect("/books") 
         }
     })
 })

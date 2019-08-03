@@ -2,8 +2,10 @@
 
 <div class="container">
     <div class="row">
-        <h1 style="text-align: center;">Edit <em><%= book.title %></em></h1>
-        <div style="width: 30%; margin: 25px auto;">
+        <div class="col-md-12 text-center">
+            <h1>Edit <em><%= book.title %></em></h1>
+        </div>
+        <div class="edit-book-form-wrapper">
             <form action="/books/<%= book._id %>?_method=PUT" method="POST">
                 <div class="form-group">
                     <input

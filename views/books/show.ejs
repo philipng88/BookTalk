@@ -11,11 +11,11 @@
             </div>
         </div>
         <div class="col-md-9">
-            <div class="thumbnail">
-                <img class="img-responsive" src="<%= book.image %>" alt="Book Cover">
-                <div class="caption-full">
-                    <h3><%= book.title %></h3>
-                    <h4><%= book.author %></h4>
+            <div class="card bg-light mb-3">
+                <img class="card-img-top show-page-book-cover" src="<%= book.image %>" alt="Book Cover">
+                <div class="card-body">
+                    <h2 class="card-title"><%= book.title %></h2>
+                    <h4 class="card-title"><%= book.author %></h4>
                     <div class="book-like-wrapper">
                         <form action="/books/<%= book._id %>/like" method="POST">
                             <div class="btn-group">
@@ -30,25 +30,25 @@
                                         <i class="fas fa-thumbs-up"></i> Like (<%= book.likes.length %>)
                                     </button>
                                 <% } %>
-                                <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#bookLikes">
-                                    Who liked this book? 
+                                <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#bookLikes">
+                                    See who liked this book 
                                 </button>
                             </div>
                         </form>
                     </div>
-                    <p><%= book.synopsis %></p>
+                    <p class="card-text"><%= book.synopsis %></p>
                     <p><em>Submitted by </em><%= book.creator.username %>, <%= moment(book.createdAt).fromNow() %></p>
                     <% if (currentUser && book.creator.id.equals(currentUser._id)) { %>
-                        <a class="btn btn-xs btn-info" href="/books/<%= book._id %>/edit">Edit</a>
+                        <a class="btn btn-sm btn-info" href="/books/<%= book._id %>/edit">Edit</a>
                         <form id="delete-form" action="/books/<%= book._id %>?_method=DELETE" method="POST">
-                            <button class="btn btn-xs btn-danger">Delete</button>
+                            <button class="btn btn-sm btn-danger">Delete</button>
                         </form>
                     <% } %>
                 </div>
             </div>
 
-            <div class="thumbnail">
-                <div class="caption-full">
+            <div class="card bg-light">
+                <div class="card-body">
                     <% if (book.rating === 0) { %>
                         <h5><em>No reviews yet</em></h5>
                     <% } else { %>
@@ -76,13 +76,13 @@
                                     <p style="text-align: justify; word-wrap: break-word;"><%= review.text %></p>
                                     <% if(currentUser && review.reviewer.id.equals(currentUser._id)){ %>
                                         <a 
-                                            class="btn btn-xs btn-warning"
+                                            class="btn btn-sm btn-info"
                                             href="/books/<%=book._id %>/reviews/<%=review._id %>/edit"
                                         >
                                             Edit
                                         </a>
                                         <form id="delete-form" action="/books/<%=book._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
-                                            <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                                            <input type="submit" class="btn btn-sm btn-danger" value="Delete">
                                         </form>
                                     <% } %>
                                 </div>
@@ -111,8 +111,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><i class="fas fa-times"></i></button>
                 <h4 class="modal-title">Book likes: <%= book.likes.length %></h4>
+                <button type="button" class="close" data-dismiss="modal"><i class="fas fa-times"></i></button>
             </div>
             <div class="modal-body">
                 <table class="table table-striped">

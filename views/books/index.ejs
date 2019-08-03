@@ -8,7 +8,7 @@
                 <form action="/books" method="GET" class="form-inline">
                     <div class="form-group">
                         <input type="text" name="search" placeholder="Search books..." class="form-control">
-                        <input type="submit" value="Search" class="btn btn-default">
+                        <button type="submit" class="btn btn-info">Search</button>
                     </div>
                 </form>
             </p>
@@ -18,14 +18,14 @@
         </div>
     </header>
 
-    <div class="row text-center" style="display:flex; flex-wrap: wrap">
+    <div class="row text-center">
         <% books.forEach(book => { %>
-            <div class="col-md-3 col-sm-6">
-                <div class="thumbnail">
-                    <img src="<%= book.image %>" alt="Book Cover">
-                    <div class="caption">
-                        <h3><%= book.title %></h3>
-                        <h4><%= book.author %></h4>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card bg-light">
+                    <img class="card-img-top homepage-book-cover" src="<%= book.image %>" alt="Book Cover">
+                    <div class="card-body">
+                        <h3 class="card-title"><%= book.title %></h3>
+                        <h4 class="card-title"><%= book.author %></h4>
                         <% if (book.rating === 0) { %>
                             <em>No reviews yet</em>
                         <% } else { %>
@@ -43,6 +43,51 @@
             </div>
         <% }) %>
     </div>
+
+    <nav aria-label="Page navigation">
+        <% if (pages && pages > 0) { %>
+            <ul class="pagination justify-content-center">
+                <% if (current == 1) { %>
+                    <li class="page-item disabled"><a class="page-link">First</a></li>
+                <% } else { %>
+                    <li><a class="page-link" href="/books">First</a></li>
+                <% } %>
+            
+                <% if (current == 1) { %>
+                    <li class="page-item disabled"><a class="page-link"><i class="fas fa-angle-double-left"></i></a></li>
+                <% } else { %>
+                    <li><a class="page-link" href="/books?page=<%= Number(current) - 1 %>"><i class="fas fa-angle-double-left"></i></a></li>
+                <% } %>
+            
+                <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                <% if (i !== 1) { %>
+                    <li class="page-item disabled"><a class="page-link">...</a></li>
+                <% } %>
+                <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                    <% if (i == current) { %>
+                        <li class="active"><a class="page-link"><%= i %></a></li>
+                        <% } else { %>
+                            <li><a class="page-link" href="/books?page=<%= i %>"><%= i %></a></li>
+                        <% } %>
+                    <% if (i == Number(current) + 4 && i < pages) { %>
+                        <li class="page-item disabled"><a class="page-link">...</a></li>
+                    <% } %>
+                <% } %>
+            
+                <% if (current == pages) { %>
+                    <li class="page-item disabled"><a class="page-link"><i class="fas fa-angle-double-right"></i></a></li>
+                <% } else { %>
+                    <li><a class="page-link" href="/books?page=<%= Number(current) + 1 %>"><i class="fas fa-angle-double-right"></i></a></li>
+                <% } %>
+            
+                <% if (current == pages) { %>
+                    <li class="page-item disabled"><a class="page-link">Last</a></li>
+                <% } else { %>
+                    <li><a class="page-link" href="/books?page=<%= pages %>">Last</a></li>
+                <% } %>
+            </ul>
+        <% } %>
+    </nav>
 </div>
 
 <% include ../partials/footer %>

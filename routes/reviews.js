@@ -78,7 +78,7 @@ router.put("/:review_id", middleware.checkReviewOwnership, (req, res) => {
             req.flash("error", err.message)
             return res.redirect("back")
         }
-        Review.findById(req.params.id).populate("reviews").exec((err, book) => {
+        Book.findById(req.params.id).populate("reviews").exec((err, book) => {
             if (err) {
                 req.flash("error", err.message)
                 return res.redirect("back")

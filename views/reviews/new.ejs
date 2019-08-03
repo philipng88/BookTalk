@@ -2,7 +2,9 @@
 
 <div class="container">
     <div class="row">
-        <h1 style="text-align: center">New Review for <em><%= book.title %></em></h1>
+        <div class="col-md-12 text-center">
+            <h1>New Review for <em><%= book.title %></em></h1>
+        </div>
         <div class="review-wrapper">
             <form action="/books/<%= book._id %>/reviews" method="POST">
                 <div class="form-group">
@@ -41,7 +43,7 @@
                     </fieldset>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" type="text" name="review[text]" rows="5" placeholder="Write a review for this book..."></textarea>
+                    <textarea required class="form-control" type="text" name="review[text]" rows="5" placeholder="Write a review for this book..."></textarea>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-primary btn-block">Submit</button>

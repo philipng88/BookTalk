@@ -21,7 +21,9 @@
 .login-form-wrapper,
 .register-form-wrapper,
 .review-wrapper,
-.review-edit-wrapper {
+.review-edit-wrapper,
+.new-book-form-wrapper,
+.edit-book-form-wrapper {
     width: 30%;
     margin: 25px auto;
 }
@@ -29,3 +31,26 @@
 .checked {
     color: orange;
 }
+
+.reveal-if-active {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+}
+
+input[type="checkbox"]:checked ~ .reveal-if-active {
+    opacity: 1;
+    max-height: 100px;
+    overflow: visible;
+}
+
+.homepage-book-cover,
+.show-page-book-cover {
+    width: 253px;
+    height: 380px;
+}
+
+input:focus::-webkit-input-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; }
+input:focus:-moz-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; } /* FF 4-18 */
+input:focus::-moz-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; } /* FF 19+ */
+input:focus:-ms-input-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; } /* IE 10+ */

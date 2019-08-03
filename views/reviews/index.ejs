@@ -4,8 +4,8 @@
     <div class="row">
         <div class="col-md-12">
             <h1 style="text-align: center">Reviews for <em><%= book.title %></em></h1>
-            <div class="thumbnail">
-                <div class="caption-full">
+            <div class="card">
+                <div class="card-body">
                     <% if (book.rating === 0) { %>
                         <h5><em>No reviews yet</em></h5>
                     <% } else { %>
@@ -18,7 +18,7 @@
                             <em>(Total reviews: <%= book.reviews.length %>)</em>
                         </p>
                         <p>Current book rating: <strong><%= book.rating.toFixed(2) %></strong></p>
-                        <p><h4>All reviews for this book:</h4></p>
+                        <p><h4>All reviews for <em><%= book.title %></em>:</h4></p>
                         <hr style="margin-top: 0">
 
                         <% book.reviews.forEach(review => { %>
@@ -32,13 +32,13 @@
                                 <div class="col-md-9">
                                     <p style="text-align: justify; word-wrap: break-word;"><%= review.text %></p>
                                     <% if (currentUser && review.reviewer.id.equals(currentUser._id)) { %>
-                                        <a class="btn btn-xs btn-warning" href="/books/<%= book._id %>/reviews/<%= review._id %>/edit">Edit</a>
+                                        <a class="btn btn-sm btn-info" href="/books/<%= book._id %>/reviews/<%= review._id %>/edit">Edit</a>
                                         <form
                                             id="delete-form" 
                                             action="/books/<%= book._id %>/reviews/<%= review._id %>?_method=DELETE"
                                             method="POST"
                                         >
-                                            <input type="submit" class="btn btn-xs btn-danger" value="Delete"> 
+                                            <input type="submit" class="btn btn-sm btn-danger" value="Delete"> 
                                         </form>
                                     <% } %>
                                 </div>
