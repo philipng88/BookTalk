@@ -1,0 +1,34 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="<%= user.profilePicture %>" alt="user profile picture">
+                <div class="card-body">
+                    <h2 class="card-title"><%= user.username %></h2>
+                    <p class="card-text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt dolorum quae voluptates enim maxime, deleniti magnam qui temporibus asperiores earum repellendus perspiciatis esse voluptatum nemo veniam sint mollitia placeat? Omnis.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h3 card-title>Books I added:</h3>
+                    <ul class="list-group list-group-flush">
+                        <% books.forEach(book => { %>
+                            <li class="list-group-item">
+                                <a href="/books/<%= book.id %>"><%= book.title %></a> <em>by <%= book.author %></em>
+                                <span class="badge badge-secondary badge-pill"><i class="fas fa-thumbs-up"></i> <%= book.likes.length %></span>
+                            </li>
+                        <% }) %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% include ../partials/footer %>

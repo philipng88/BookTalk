@@ -49,8 +49,8 @@ router.post("/", middleware.isLoggedIn, middleware.checkReviewExistence, (req, r
                 req.flash("error", err.message)
                 return res.redirect("back")
             }
-            review.reviewer.id = req.user._id
-            review.reviewer.username = req.user.username
+            review.author.id = req.user._id
+            review.author.username = req.user.username
             review.book = book
             review.save()
             book.reviews.push(review)

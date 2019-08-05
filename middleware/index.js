@@ -1,5 +1,6 @@
 const Book = require("../models/book")
 const Review = require("../models/review")
+const Comment = require("../models/comment")
 const middlewareObj = {}
 
 middlewareObj.isLoggedIn = (req, res, next) => {
@@ -38,7 +39,7 @@ middlewareObj.checkReviewOwnership = (req, res, next) => {
                 req.flash("error", "Something went wrong...")
                 res.redirect("back") 
             } else {
-                if (foundReview.reviewer.id.equals(req.user._id) || req.user.isAdmin) {
+                if (foundReview.author.id.equals(req.user._id) || req.user.isAdmin) {
                     next()
                 } else {
                     req.flash("error", "You don't have the required permissions for that action")
@@ -60,7 +61,7 @@ middlewareObj.checkReviewExistence = (req, res, next) => {
                 res.redirect("back")
             } else {
                 const foundUserReview = foundBook.reviews.some(review => {
-                    return review.reviewer.id.equals(req.user._id)
+                    return review.author.id.equals(req.user._id)
                 })
                 if (foundUserReview) {
                     req.flash("error", "You have already written a review for this book")
@@ -72,6 +73,27 @@ middlewareObj.checkReviewExistence = (req, res, next) => {
     } else {
         req.flash("error", "Please Log In")
         res.redirect("back")
+    }
+}
+
+middlewareObj.checkCommentOwnership = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        Comment.findById(req.params.comment_id, (err, foundComment) => {
+            if(err) {
+                req.flash("error", "Comment not found") 
+                res.redirect("back")
+            } else {
+                if (foundComment.author.id.equals(req.user._id) || req.user.isAdmin) {
+                    next()
+                } else {
+                    req.flash("error", "You don't have the required permissions for that action")
+                    res.redirect("back") 
+                }
+            }
+        })
+    } else {
+        req.flash("error", "Please Log In")
+        res.redirect("back") 
     }
 }
 

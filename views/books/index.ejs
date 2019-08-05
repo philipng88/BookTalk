@@ -4,11 +4,13 @@
     <header class="jumbotron">
         <div class="container">
             <h1><i class="fas fa-book-open"></i> Welcome to BookTalk!</h1>
-            <p>
-                <form action="/books" method="GET" class="form-inline">
-                    <div class="form-group">
-                        <input type="text" name="search" placeholder="Search books..." class="form-control">
-                        <button type="submit" class="btn btn-info">Search</button>
+            <p>    
+                <form action="/books" method="GET">    
+                    <div class="input-group mb-4 homepage-search">
+                        <input type="search" name="search" placeholder="Search books..." aria-describedby="button-addon6" class="form-control">
+                        <div class="input-group-append">
+                              <button id="button-addon6" type="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
+                        </div>
                     </div>
                 </form>
             </p>

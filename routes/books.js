@@ -75,7 +75,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
 })
 
 router.get("/:id", (req, res) => {
-    Book.findById(req.params.id).populate("likes").populate({
+    Book.findById(req.params.id).populate("likes").populate("comments").populate({
         path: "reviews",
         options: {sort: {createdAt: -1}} 
     }).exec((err, foundBook) => {

@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const passport = require("passport") 
 const User = require("../models/user")
+const Book = require("../models/book")
 
 router.get("/", (req, res) => {
     res.render("landing")
@@ -12,7 +13,7 @@ router.get("/register", (req, res) => {
 })
 
 router.post("/register", (req, res) => {
-    const newUser = new User({username: req.body.username})
+    const newUser = new User({username: req.body.username, profilePicture: req.body.profilePicture})
     if (req.body.adminCode === process.env.ADMIN_CODE) {
         newUser.isAdmin = true
     }
@@ -38,6 +39,22 @@ router.get("/logout", (req, res) => {
     req.logOut()
     req.flash("success", "Successfully Logged Out") 
     res.redirect("/books") 
+})
+
+router.get("/users/:id", (req, res) => {
+    User.findById(req.params.id, (err, foundUser) => {
+        if (err) {
+            req.flash("error", "Something went wrong...")
+            res.redirect("/books")
+        }
+        Book.find().where('creator.id').equals(foundUser._id).exec((err, books) => {
+            if (err) {
+                req.flash("error", "Something went wrong...")
+                res.redirect("/books")
+            }
+            res.render("users/show", {user: foundUser, books: books}) 
+        }) 
+    })
 })
 
 module.exports = router 

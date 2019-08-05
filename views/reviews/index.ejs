@@ -26,12 +26,12 @@
                                 <div class="col-md-3">
                                     <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %>
                                     <%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %> 
-                                    <div>Review by: <strong><%= review.reviewer.username %></strong></div>
+                                    <div>Review by: <strong><%= review.author.username %></strong></div>
                                     <span><em><%= review.updatedAt.toDateString() %></em></span>
                                 </div>
                                 <div class="col-md-9">
                                     <p style="text-align: justify; word-wrap: break-word;"><%= review.text %></p>
-                                    <% if (currentUser && (review.reviewer.id.equals(currentUser._id) || currentUser.isAdmin)) { %>
+                                    <% if (currentUser && (review.author.id.equals(currentUser._id) || currentUser.isAdmin)) { %>
                                         <a class="btn btn-sm btn-info" href="/books/<%= book._id %>/reviews/<%= review._id %>/edit">Edit</a>
                                         <form
                                             id="delete-form" 
@@ -48,7 +48,7 @@
                     <% } %>
                     <div>
                         <a 
-                            class="btn btn-primary <% if (currentUser && book.reviews.some(review => {return review.reviewer.id.equals(currentUser._id)})) { %> disabled <% } %>"
+                            class="btn btn-primary <% if (currentUser && book.reviews.some(review => {return review.author.id.equals(currentUser._id)})) { %> disabled <% } %>"
                             href="/books/<%= book._id %>/reviews/new"
                         >
                             Write a Review 

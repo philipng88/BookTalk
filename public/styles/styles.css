@@ -1,16 +1,20 @@
-.thumbnail {
-    padding: 0;
+a {
+    font-weight: bold;
 }
 
-/* .thumbnail img {
-    width: 100%;
-} */
-
-.thumbnail > .caption-full {
-    padding: 9px;
+a:hover {
+   text-decoration:none;
 }
 
-#delete-form {
+.homepage-search {
+    width: 50%;
+}
+
+.form-control:focus {
+    box-shadow: none;
+}
+
+.delete-form {
     display: inline;
 }
 
@@ -20,16 +24,21 @@
 
 .login-form-wrapper,
 .register-form-wrapper,
-.review-wrapper,
-.review-edit-wrapper,
 .new-book-form-wrapper,
-.edit-book-form-wrapper {
+.edit-book-form-wrapper,
+.new-comment-form-wrapper {
     width: 30%;
     margin: 25px auto;
 }
 
+.review-wrapper,
+.review-edit-wrapper {
+    width: 50%;
+    margin: 25px auto;
+}
+
 .checked {
-    color: orange;
+    color: gold;
 }
 
 .reveal-if-active {
@@ -48,6 +57,30 @@ input[type="checkbox"]:checked ~ .reveal-if-active {
 .show-page-book-cover {
     width: 253px;
     height: 380px;
+}
+
+#editor-container {
+    height: 375px;
+}
+
+.comment-well-new { 
+    border-left: 5px solid #00c851; 
+    padding: 10px;
+}
+
+.comment-well-edit {
+    border-left: 5px solid #ffbb33; 
+    margin-top: 15px; 
+    padding: 10px;
+}
+
+.comment-well-submit-btn {
+    margin-bottom: 0;
+}
+
+.fa-exclamation-triangle {
+    color: red;
+    margin-right: 5px;
 }
 
 input:focus::-webkit-input-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; }
