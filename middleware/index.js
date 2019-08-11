@@ -8,7 +8,7 @@ middlewareObj.isLoggedIn = (req, res, next) => {
         return next() 
     }
     req.flash("error", "Please Log In")
-    res.redirect("/login") 
+    res.redirect("back") 
 }
 
 middlewareObj.checkBookOwnership = (req, res, next) => {

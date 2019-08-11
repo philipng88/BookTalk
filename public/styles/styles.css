@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 a {
     font-weight: bold;
 }
@@ -6,34 +10,11 @@ a:hover {
    text-decoration:none;
 }
 
-.homepage-search {
-    width: 50%;
-}
-
 .form-control:focus {
     box-shadow: none;
 }
 
-.delete-form {
-    display: inline;
-}
-
-.book-like-wrapper {
-    padding-bottom: 10px;
-}
-
-.login-form-wrapper,
-.register-form-wrapper,
-.new-book-form-wrapper,
-.edit-book-form-wrapper,
-.new-comment-form-wrapper {
-    width: 30%;
-    margin: 25px auto;
-}
-
-.review-wrapper,
-.review-edit-wrapper {
-    width: 50%;
+.form-wrapper {
     margin: 25px auto;
 }
 
@@ -53,35 +34,28 @@ input[type="checkbox"]:checked ~ .reveal-if-active {
     overflow: visible;
 }
 
-.homepage-book-cover,
-.show-page-book-cover {
-    width: 253px;
-    height: 380px;
-}
-
-#editor-container {
-    height: 375px;
+.comment-well-new,
+.comment-well-edit {
+    margin-top: 15px;
+    padding: 10px;
 }
 
 .comment-well-new { 
+    display: block;
     border-left: 5px solid #00c851; 
-    padding: 10px;
 }
 
 .comment-well-edit {
     border-left: 5px solid #ffbb33; 
-    margin-top: 15px; 
-    padding: 10px;
-}
-
-.comment-well-submit-btn {
-    margin-bottom: 0;
 }
 
 .fa-exclamation-triangle {
     color: red;
-    margin-right: 5px;
 }
+
+.profile-picture-url-input:hover {
+    cursor: not-allowed;
+} 
 
 input:focus::-webkit-input-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; }
 input:focus:-moz-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; } /* FF 4-18 */

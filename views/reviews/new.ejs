@@ -5,11 +5,19 @@
         <div class="col-md-12 text-center">
             <h1>New Review for <em><%= book.title %></em></h1>
         </div>
-        <div class="review-wrapper">
+        <div class="form-wrapper w-50">
             <form action="/books/<%= book._id %>/reviews" method="POST">
                 <div class="form-group">
                     <label for="rating">Leave a rating:</label>
-                    <fieldset class="starability-basic form-group" id="rating">
+                    <select name="review[rating]" class="form-control" id="rating">
+                        <option value="" selected>...</option>
+                        <option value="5"><%- '<span>&#11088;</span>'.repeat(5) %></option>
+                        <option value="4"><%- '<span>&#11088;</span>'.repeat(4) %></option>
+                        <option value="3"><%- '<span>&#11088;</span>'.repeat(3) %></option>
+                        <option value="2"><%- '<span>&#11088;</span>'.repeat(2) %></option>
+                        <option value="1">&#11088;</option>
+                    </select>
+                    <!-- <fieldset class="starability-basic form-group" id="rating">
                         <div>
                             <input type="radio" name="review[rating]" id="first-rate5" value="5" />
                             <label for="first-rate5" title="5 stars">
@@ -40,12 +48,19 @@
                                 <%- '<span class="fa fa-star checked"></span>'.repeat(1) %>
                             </label>
                         </div>
-                    </fieldset>
+                    </fieldset> -->
                 </div>
                 <div class="form-group">
-                    <textarea id="review-content" required class="form-control" type="text" name="review[text]" placeholder="Write a review for this book..."></textarea>
+                    <textarea 
+                        id="review-content" 
+                        required 
+                        class="form-control" 
+                        type="text" 
+                        name="review[text]" 
+                        placeholder="Write a review for this book..."
+                        rows="8"
+                    ></textarea>
                 </div>
-                <!-- <div id="editor-container"></div> -->
                 <div class="form-group">
                     <button id="review-submit-button" class="btn btn-primary btn-block">Submit</button>
                 </div>
@@ -54,23 +69,5 @@
         </div>
     </div>
 </div>
-<!-- <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
-<script>
-    var quill = new Quill('#editor-container', {
-            modules: {
-                toolbar: [
-                    [{ header: [1, 2, false] }],
-                    ['bold', 'italic', 'underline'],
-                ]
-            },
-            theme: 'snow'
-        });
-</script>
-<script>
-    document.getElementById("review-submit-button").addEventListener("click", () => {
-        const text = quill.getText()
-        alert(text) 
-    })
-</script> -->
 
 <% include ../partials/footer %>

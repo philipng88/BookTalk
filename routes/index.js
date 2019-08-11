@@ -33,7 +33,12 @@ router.get("/login", (req, res) => {
     res.render("login", {page: "login"})  
 })
 
-router.post("/login", passport.authenticate("local", {successRedirect: "/books", failureRedirect: "/login"}))
+router.post("/login", passport.authenticate("local", {
+    successRedirect: "/books", 
+    failureRedirect: "/login",
+    failureFlash: true,
+    successFlash: "Successfully Logged In"
+}))
 
 router.get("/logout", (req, res) => {
     req.logOut()

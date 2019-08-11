@@ -27,7 +27,8 @@ router.get("/", (req, res) => {
                         books: allBooks,
                         current: pageNumber,
                         pages: Math.ceil(count / perPage),
-                        search: req.query.search 
+                        search: req.query.search,
+                        page: "books" 
                     })
                 }
             })
@@ -43,7 +44,8 @@ router.get("/", (req, res) => {
                         books: allBooks, 
                         current: pageNumber, 
                         pages: Math.ceil(count / perPage),
-                        search: false
+                        search: false,
+                        page: "books"
                     })
                 }
             })
@@ -65,6 +67,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
         if (err) {
             console.log(err)
         } else {
+            req.flash("success", "Successfully added book!")
             res.redirect("/books") 
         }
     })
@@ -110,7 +113,7 @@ router.delete("/:id", middleware.checkBookOwnership, (req, res) => {
             res.redirect("/books")
         } else {
             // delete all reviews associated with the book
-            Review.remove({"_id": {$in: book.reviews}}, err => {
+            Review.deleteMany({"_id": {$in: book.reviews}}, err => {
                 if (err) {
                     console.log(err)
                     return res.redirect("/books")

@@ -5,33 +5,36 @@
         <div class="col-md-12 text-center">
             <h1>Add a Book</h1>
         </div>
-        <div class="new-book-form-wrapper">
+        <div class="form-wrapper w-50">
             <form action="/books" method="POST">
                 <div class="form-group">
+                    <label for="new-book-title">Title</label>
                     <input
                         required 
-                        class="form-control" 
+                        class="form-control"
+                        id="new-book-title" 
                         type="text" 
                         name="title" 
-                        placeholder="title"
                     >
                 </div>
                 <div class="form-group">
+                    <label for="new-book-author">Author</label>
                     <input
                         required 
-                        class="form-control" 
+                        class="form-control"
+                        id="new-book-author" 
                         type="text" 
                         name="author" 
-                        placeholder="author"
                     >
                 </div>
                 <div class="form-group">
+                    <label for="new-book-image-url">Book Image URL</label>
                     <input
                         required 
                         class="form-control" 
+                        id="new-book-image-url"
                         type="text" 
                         name="image" 
-                        placeholder="image url"
                         aria-describedby="image-url-requirements"
                         pattern="^https:\/\/i\.gr-assets\.com\/images\/S\/.*"
                     >
@@ -40,11 +43,13 @@
                     </small>
                 </div>
                 <div class="form-group">
+                    <label for="new-book-synopsis">Synopsis</label>
                     <textarea 
-                        class="form-control" 
+                        rows="5"
+                        class="form-control"
+                        id="new-book-synopsis" 
                         type="text" 
                         name="synopsis"
-                        placeholder="synopsis..." 
                     ></textarea> 
                 </div>
                 <div class="form-group">

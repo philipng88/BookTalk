@@ -1,34 +1,10 @@
-<!-- <% include ./partials/header %>
-
-<div class="container">
-    <div class="row">
-        <h1 style="text-align: center">Sign Up</h1>
-        <div class="register-form-wrapper">
-            <form action="/register" method="POST">
-                <div class="form-group">
-                    <input class="form-control" type="text" name="username" placeholder="username">
-                </div>
-                <div class="form-group">
-                    <input class="form-control" type="password" name="password" placeholder="password">
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-lg btn-primary btn-block">Submit</button>
-                </div>
-            </form>
-            <a href="/books">Cancel</a>
-        </div>
-    </div>
-</div>
-
-<% include ./partials/footer %> -->
-
 <% include ./partials/header %>
 <div class="container">
     <div class="row">
         <div class="col-md-12 text-center">
             <h1>Sign Up</h1>
         </div>
-        <div class="register-form-wrapper">
+        <div class="form-wrapper" style="width: 30%;">
             <form action="/register" method="POST">
                 <div class="form-group input-group">
                     <input 
@@ -51,12 +27,23 @@
                     />
                     <small id="password-requirements" class="form-text text-muted">Password must contain at least one number, one uppercase letter, one lowercase letter, and 8 or more characters</small>
                 </div>
-                <div class="form-group">
-                    <input
-                        class="form-control fas fa-portrait" 
+                <div class="form-group input-group">
+                    <!-- <label class="has-float-label">
+                        <input
+                            class="form-control fas fa-portrait" 
+                            type="text"
+                            name="profilePicture"
+                            value="https://www.searchpng.com/wp-content/uploads/2019/02/Deafult-Profile-Pitcher.png"
+                            readonly
+                        >
+                        <span>Profile Picture URL</span>
+                    </label> -->
+                    <input 
                         type="text"
+                        class="form-control fas fa-portrait profile-picture-url-input"
                         name="profilePicture"
                         placeholder="&#xf3e0; Profile Picture URL"
+                        disabled
                     >
                 </div>
                 <input type="checkbox" name="admin-option">
