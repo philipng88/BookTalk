@@ -6,9 +6,9 @@
             <div class="sticky-top">
                 <img class="img-fluid" src="<%= book.image %>" alt="Book Cover">
                 <ul class="list-group mt-3" id="side-nav">
-                    <a href="#book-info" class="list-group-item list-group-item-primary">Book Info</a> 
-                    <a href="#comments-card" class="list-group-item list-group-item-primary">Comments</a>
-                    <a href="#reviews-card" class="list-group-item list-group-item-primary">Reviews</a>
+                    <a href="#book-info" class="list-group-item list-group-item-secondary">Book Info</a> 
+                    <a href="#comments-card" class="list-group-item list-group-item-secondary">Comments</a>
+                    <a href="#reviews-card" class="list-group-item list-group-item-secondary">Reviews</a>
                 </ul>
             </div>
         </div>
@@ -17,9 +17,17 @@
             <div id="book-info">
                 <h2><%= book.title %></h2>
                 <h4><%= book.author %></h4>
-                <p><%= book.synopsis %></p>
+                <p class="lead"><%= book.synopsis %></p>
                 <p>
                     <em>Submitted by </em><a href="/users/<%= book.creator.id %>"><%= book.creator.username %></a>, <%= moment(book.createdAt).fromNow() %>
+                </p>
+                <p>
+                    Current book rating: <% if (book.rating === 0) { %>
+                        <span class="font-weight-bold">n/a</span> 
+                    <% } else { %>
+                        <span class="stars text-center" data-rating="<%= book.rating %>" data-num-stars="5"></span>
+                        <span class="font-weight-bold"><%= book.rating.toFixed(2) %> / 5.00</span>
+                    <% } %> 
                 </p>
                 <% if (currentUser && (book.creator.id.equals(currentUser._id) || currentUser.isAdmin)) { %>
                     <p style="display: inline;">
@@ -57,7 +65,7 @@
             </div>
         
             <div id="comments-card" class="card bg-light mb-3 mt-3">
-                <div class="card-body">
+                <div class="card-header">
                     <div class="clearfix">
                         <h4 class="font-weight-bold float-left">Comments <i class="fas fa-comments" aria-hidden="true"></i></h4>
                         <a class="btn btn-success float-right" 
@@ -71,8 +79,10 @@
                             Add new comment  
                         </a>
                     </div>
+                </div>
+                <div class="card-body">
                     <div class="collapse" id="collapseComment">
-                        <div class="card comment-well-new">
+                        <div class="card comment-well-new p-2 mb-3">
                             <% if(!currentUser) { %>
                                 <div>
                                     <i class="fas fa-exclamation-triangle"></i> You must be logged in to comment.<br>
@@ -98,7 +108,6 @@
                             <% } %>
                         </div>
                     </div>
-                    <hr>
                     <% if (book.comments.length === 0) { %>
                         <em>No comments yet</em>
                     <% } %>
@@ -109,7 +118,7 @@
                                 <span class="font-weight-bold"><%= comment.author.username %></span>
                                 <p> <%= comment.text %> </p> 
                                 <% if (currentUser && currentUser._id.equals(comment.author.id) || currentUser && currentUser.isAdmin) { %>
-                                    <div class="button-group">
+                                    <div>
                                         <a 
                                             class="btn btn-sm btn-info" 
                                             role="button" 
@@ -145,63 +154,55 @@
                 </div>
             </div>
 
-            <div id="reviews-card" class="card bg-light">
-                <div class="card-body">
-                    <% if (book.rating === 0) { %>
-                        <h5><em>No reviews yet</em></h5>
-                        <a class="h5 text-info" href="/books/<%= book._id %>/reviews/new">
-                            <i class="fas fa-pen"></i> Be the first to write a review!
-                        </a>
-                    <% } else { %>
-                        <h4 class="font-weight-bold">Reviews</h4>
-                        <p>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star <% if (book.rating > 1.5) { %> checked <% } %>"></span>
-                            <span class="fa fa-star <% if (book.rating > 2.5) { %> checked <% } %>"></span>
-                            <span class="fa fa-star <% if (book.rating > 3.5) { %> checked <% } %>"></span>
-                            <span class="fa fa-star <% if (book.rating > 4.5) { %> checked <% } %>"></span>
-                            <em>(total reviews: <%= book.reviews.length %>)</em>
-                        </p>
-                        <p>
-                            Current book rating: <span class="font-weight-bold"><%= book.rating.toFixed(2) %></span>
-                        </p>
-                        <hr>
-                        <% book.reviews.slice(0, 5).forEach(review => { %>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %><%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %>
-                                    <div>Review by: <span class="font-weight-bold"><%= review.author.username %></span></div>
-                                    <span><em><%= review.updatedAt.toDateString() %></em></span>
-                                </div>
-                                <div class="col-md-9">
-                                    <p style="text-align: justify; word-wrap: break-word;"><%= review.text %></p>
-                                    <% if(currentUser && (review.author.id.equals(currentUser._id) || currentUser.isAdmin)) { %>
-                                        <a 
-                                            class="btn btn-sm btn-info"
-                                            href="/books/<%=book._id %>/reviews/<%=review._id %>/edit"
-                                        >
-                                            Edit
-                                        </a>
-                                        <form class="d-inline" action="/books/<%=book._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
-                                            <input type="submit" class="btn btn-sm btn-danger" value="Delete">
-                                        </form>
-                                    <% } %>
-                                </div>
-                            </div>
-                            <hr>
-                        <% }) %>
-                        <a class="h5 text-info" href="/books/<%= book._id %>/reviews">
-                            <i class="far fa-eye" aria-hidden="true"></i> See all reviews
-                        </a>
-                    
-                        <a 
-                            class="h5 pl-3 text-info <% if (currentUser && book.reviews.some(review => {return review.author.id.equals(currentUser._id)})) { %> d-none <% } %>" 
-                            href="/books/<%= book._id %>/reviews/new"
-                        >
-                            <i class="fas fa-pen"></i> Write a review
-                        </a>
-                    <% } %>
+            <div id="reviews-card" class="card bg-light mb-3">
+                <div class="card-header">
+                    <div class="clearfix">
+                        <% if (book.rating === 0) { %>
+                            <h4 class="float-left"><em>No reviews yet</em></h4>
+                            <a class="btn btn-success float-right" href="/books/<%= book._id %>/reviews/new">
+                                <i class="fas fa-pen"></i> Write a review
+                            </a>
+                        <% } else { %>
+                            <h4 class="font-weight-bold float-left">Latest Reviews</h4>
+                            <a 
+                                class="btn btn-success float-right <% if (currentUser && book.reviews.some(review => {return review.author.id.equals(currentUser._id)})) { %> d-none <% } %>" 
+                                href="/books/<%= book._id %>/reviews/new"
+                            >
+                                <i class="fas fa-pen"></i> Write a review
+                            </a>
+                    </div>
                 </div>
+                <div class="card-body">
+                <% book.reviews.slice(0, 5).forEach(review => { %>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %><%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %>
+                            <div>Review by: <span class="font-weight-bold"><%= review.author.username %></span></div>
+                            <span><em><%= review.updatedAt.toDateString() %></em></span>
+                            <% if(currentUser && (review.author.id.equals(currentUser._id) || currentUser.isAdmin)) { %>
+                                <div class="pt-2">
+                                    <a 
+                                        class="btn btn-sm btn-info"
+                                        href="/books/<%=book._id %>/reviews/<%=review._id %>/edit"
+                                    >
+                                        Edit
+                                    </a>
+                                    <form class="d-inline" action="/books/<%=book._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
+                                        <input type="submit" class="btn btn-sm btn-danger" value="Delete">
+                                    </form>
+                                </div>
+                            <% } %>
+                        </div>
+                        <div class="col-md-9">
+                            <p style="text-align: justify; word-wrap: break-word;"><%= review.text %></p>
+                        </div>
+                    </div>
+                <% }) %> 
+                </div>
+                <div class="card-footer">
+                    <a class="h5 text-info" href="/books/<%= book._id %>/reviews"><i class="far fa-eye" aria-hidden="true"></i> See all reviews</a>
+                </div>
+                <% } %>
             </div>
         </div>
     </div>

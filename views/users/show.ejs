@@ -7,10 +7,13 @@
                 <img class="card-img-top" src="<%= user.profilePicture %>" alt="user profile picture">
                 <div class="card-body">
                     <h2 class="card-title"><%= user.username %></h2>
-                    <p class="card-text">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt dolorum quae voluptates enim maxime, deleniti magnam qui temporibus asperiores earum repellendus perspiciatis esse voluptatum nemo veniam sint mollitia placeat? Omnis.
-                    </p>
+                    <p class="card-text"><%= user.aboutMe %></p>
                 </div>
+                <% if (currentUser && (user._id.equals(currentUser._id) || currentUser.isAdmin)) { %>
+                    <div class="card-footer">
+                        <a href="/users/<%= user._id %>/edit" class="btn btn-info">Edit Profile</a>
+                    </div>
+                <% } %>
             </div>
         </div>
         <div class="col-md-8">

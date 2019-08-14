@@ -34,7 +34,6 @@ input[type="checkbox"]:checked ~ .reveal-if-active {
     overflow: visible;
 }
 
-.comment-well-new,
 .comment-well-edit {
     margin-top: 15px;
     padding: 10px;
@@ -61,3 +60,15 @@ input:focus::-webkit-input-placeholder { transition: opacity 0.3s 0.3s ease; opa
 input:focus:-moz-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; } /* FF 4-18 */
 input:focus::-moz-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; } /* FF 19+ */
 input:focus:-ms-input-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; } /* IE 10+ */
+
+@media (max-width: 767px) {
+    .book-searchbar {
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .book-searchbar {
+        width: 50%;
+    }
+}

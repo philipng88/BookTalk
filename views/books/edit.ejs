@@ -14,7 +14,7 @@
                         class="form-control" 
                         id="edit-book-title"
                         type="text" 
-                        name="book[title]" 
+                        name="title" 
                         value="<%= book.title %>"
                     >
                 </div>
@@ -25,7 +25,7 @@
                         class="form-control" 
                         id="edit-book-author"
                         type="text" 
-                        name="book[author]" 
+                        name="author" 
                         value="<%= book.author %>"
                     >
                 </div>
@@ -36,7 +36,7 @@
                         class="form-control"
                         id="edit-book-image-url" 
                         type="text" 
-                        name="book[image]" 
+                        name="image" 
                         value="<%= book.image %>"
                         pattern="^https:\/\/i\.gr-assets\.com\/images\/S\/.*"
                     >
@@ -49,7 +49,7 @@
                         class="form-control"
                         id="edit-book-synopsis" 
                         type="text" 
-                        name="book[synopsis]" 
+                        name="synopsis" 
                     ><%= book.synopsis %></textarea>
                 </div>
                 <div class="form-group">

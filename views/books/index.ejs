@@ -7,7 +7,7 @@
             <p class="h4">Review and discuss all your favorite books!</p>
             <p>    
                 <form action="/books" method="GET">    
-                    <div class="input-group mb-4 w-50">
+                    <div class="input-group mb-4 book-searchbar">
                         <input type="search" name="search" placeholder="Search books..." aria-describedby="button-addon6" class="form-control">
                         <div class="input-group-append">
                               <button id="button-addon6" type="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
@@ -26,22 +26,18 @@
             <div class="col-md-3 col-sm-6 mb-4">
                 <div class="card bg-light homepage-card">
                     <img class="card-img-top homepage-book-cover" src="<%= book.image %>" alt="Book Cover">
-                    <div class="card-body">
+                    <div class="card-body pb-2">
                         <h4 class="card-title"><%= book.title %></h4>
                         <h5 class="card-title"><%= book.author %></h5>
-                        <% if (book.rating === 0) { %>
+                        <!-- <% if (book.rating === 0) { %>
                             <em>No reviews yet</em>
                         <% } else { %>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star <% if (book.rating > 1.5) { %> checked <% } %>"></span>
-                            <span class="fa fa-star <% if (book.rating > 2.5) { %> checked <% } %>"></span>
-                            <span class="fa fa-star <% if (book.rating > 3.5) { %> checked <% } %>"></span>
-                            <span class="fa fa-star <% if (book.rating > 4.5) { %> checked <% } %>"></span>
-                        <% } %>
+                            <span class="stars text-center" data-rating="<%= book.rating %>" data-num-stars="5"></span>
+                        <% } %> -->
                     </div>
-                    <p>
+                    <div class="card-footer">
                         <a href="/books/<%= book._id %>" class="btn btn-primary">More Info</a>
-                    </p>
+                    </div>
                 </div>
             </div>
         <% }) %>

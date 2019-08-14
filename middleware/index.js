@@ -1,6 +1,7 @@
 const Book = require("../models/book")
 const Review = require("../models/review")
 const Comment = require("../models/comment")
+const User = require("../models/user")
 const middlewareObj = {}
 
 middlewareObj.isLoggedIn = (req, res, next) => {
@@ -93,6 +94,36 @@ middlewareObj.checkCommentOwnership = (req, res, next) => {
         })
     } else {
         req.flash("error", "Please Log In")
+        res.redirect("back") 
+    }
+}
+
+middlewareObj.checkUserProfileOwnership = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        User.findById(req.params.id, (err, foundUser) => {
+            if (err || !foundUser) {
+                req.flash("error", "User not found")
+                res.redirect("back")
+            } else {
+                if (foundUser._id.equals(req.user._id) || req.user.isAdmin) {
+                    next()
+                } else {
+                    req.flash("error", "Access Denied: That is not your profile")
+                    res.redirect("back")
+                }
+            }
+        })
+    } else {
+        req.flash("error", "Please Log In")
+        res.redirect("back") 
+    }
+}
+
+middlewareObj.bookCoverImageIsAllowed = (req, res, next) => {
+    if (req.body.image.match(/^https:\/\/i\.gr-assets\.com\/images\/S\/.*/)) {
+        next()
+    } else {
+        req.flash("error", "Only images from goodreads.com are allowed")
         res.redirect("back") 
     }
 }

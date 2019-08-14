@@ -53,7 +53,7 @@ router.get("/", (req, res) => {
     }
 })
 
-router.post("/", middleware.isLoggedIn, (req, res) => {
+router.post("/", middleware.isLoggedIn, middleware.bookCoverImageIsAllowed, (req, res) => {
     const title = req.body.title 
     const author = req.body.author 
     const image = req.body.image 
@@ -96,9 +96,10 @@ router.get("/:id/edit", middleware.checkBookOwnership, (req, res) => {
     }) 
 })
 
-router.put("/:id", middleware.checkBookOwnership, (req, res) => {
+router.put("/:id", middleware.checkBookOwnership, middleware.bookCoverImageIsAllowed, (req, res) => {
     delete req.body.book.rating
-    Book.findByIdAndUpdate(req.params.id, req.body.book, (err, updatedBook) => {
+    const newData = {title: req.body.title, author: req.body.author, image: req.body.image, synopsis: req.body.synopsis}
+    Book.findByIdAndUpdate(req.params.id, {$set: newData}, (err, updatedBook) => {
         if (err) {
             res.redirect("/books")
         } else {

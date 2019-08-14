@@ -13,10 +13,11 @@ const bookRoutes = require("./routes/books")
 const indexRoutes = require("./routes/index")
 const reviewRoutes = require("./routes/reviews")
 const commentRoutes = require("./routes/comments")
+const userRoutes = require("./routes/users")
 
 const User = require("./models/user")
 
-const port = parseInt(process.env.PORT) 
+const port = 3000 
 
 mongoose.connect("mongodb://localhost/book_talk", { useNewUrlParser: true })
 mongoose.set('useFindAndModify', false) 
@@ -51,6 +52,7 @@ app.use(indexRoutes)
 app.use("/books", bookRoutes)
 app.use("/books/:id/reviews", reviewRoutes) 
 app.use("/books/:id/comments", commentRoutes)
+app.use("/users", userRoutes) 
 
 app.listen(port, () => {
     console.log(`The BookTalk server has started on port ${port}`)
