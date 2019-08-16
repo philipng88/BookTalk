@@ -17,7 +17,7 @@ const userRoutes = require("./routes/users")
 
 const User = require("./models/user")
 
-const port = 3000 
+const port = process.env.PORT || 3000 
 
 mongoose.connect("mongodb://localhost/book_talk", { useNewUrlParser: true })
 mongoose.set('useFindAndModify', false) 

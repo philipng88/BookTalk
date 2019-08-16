@@ -35,21 +35,15 @@ input[type="checkbox"]:checked ~ .reveal-if-active {
 }
 
 .comment-well-edit {
-    margin-top: 15px;
-    padding: 10px;
-}
-
-.comment-well-new { 
-    display: block;
-    border-left: 5px solid #00c851; 
-}
-
-.comment-well-edit {
     border-left: 5px solid #ffbb33; 
 }
 
-.fa-exclamation-triangle {
-    color: red;
+.comment-well-new { 
+    border-left: 5px solid #00c851; 
+}
+
+.show-page-book-cover:hover {
+    cursor: zoom-in;
 }
 
 .profile-picture-url-input:hover {

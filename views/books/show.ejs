@@ -4,7 +4,9 @@
     <div class="row">
         <div class="col-lg-3">
             <div class="sticky-top">
-                <img class="img-fluid" src="<%= book.image %>" alt="Book Cover">
+                <a href="<%= book.image %>" class="show-page-book-cover" data-toggle="lightbox">
+                    <img class="img-fluid" src="<%= book.image %>" alt="Book Cover">
+                </a>
                 <ul class="list-group mt-3" id="side-nav">
                     <a href="#book-info" class="list-group-item list-group-item-secondary">Book Info</a> 
                     <a href="#comments-card" class="list-group-item list-group-item-secondary">Comments</a>
@@ -85,7 +87,7 @@
                         <div class="card comment-well-new p-2 mb-3">
                             <% if(!currentUser) { %>
                                 <div>
-                                    <i class="fas fa-exclamation-triangle"></i> You must be logged in to comment.<br>
+                                    <i class="fas fa-exclamation-triangle text-danger"></i> You must be logged in to comment.<br>
                                     <a href="/login">Click here</a> to log in
                                 </div>
                             <% } %>
@@ -134,7 +136,7 @@
                                         </form>
                                     </div> 
                                     <div class="collapse" id="collapseEdit<%= comment._id %>">
-                                        <div class="card comment-well-edit"> 
+                                        <div class="card comment-well-edit p-2 my-3"> 
                                             <h4>Edit comment</h4>
                                             <form id="edit-comment-form<%= comment._id %>" action="/books/<%= book._id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
                                                 <div class="form-group">
