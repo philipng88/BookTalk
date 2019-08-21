@@ -6,7 +6,7 @@
             <h1>Edit <em><%= book.title %></em></h1>
         </div>
         <div class="form-wrapper w-50">
-            <form action="/books/<%= book._id %>?_method=PUT" method="POST">
+            <form action="/books/<%= book.slug %>?_method=PUT" method="POST">
                 <div class="form-group">
                     <label for="edit-book-title">Title</label>
                     <input

@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const Book = require("../models/book")
+const Comment = require("../models/comment")
 const Review = require("../models/review")
 const middleware = require("../middleware")
 
@@ -63,7 +64,7 @@ router.post("/", middleware.isLoggedIn, middleware.bookCoverImageIsAllowed, (req
         username: req.user.username
     }
     const newBook = {title:title, author:author, image:image, synopsis:synopsis, creator:creator}
-    Book.create(newBook, (err, newlyAdded) => {
+    Book.create(newBook, err => {
         if (err) {
             console.log(err)
         } else {
@@ -77,8 +78,8 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
     res.render("books/new")
 })
 
-router.get("/:id", (req, res) => {
-    Book.findById(req.params.id).populate("likes").populate("comments").populate({
+router.get("/:slug", (req, res) => {
+    Book.findOne({slug: req.params.slug}).populate("likes").populate("comments").populate({
         path: "reviews",
         options: {sort: {createdAt: -1}} 
     }).exec((err, foundBook) => {
@@ -90,45 +91,61 @@ router.get("/:id", (req, res) => {
     }) 
 })
 
-router.get("/:id/edit", middleware.checkBookOwnership, (req, res) => {
-    Book.findById(req.params.id, (err, foundBook) => {
+router.get("/:slug/edit", middleware.checkBookOwnership, (req, res) => {
+    Book.findOne({slug: req.params.slug}, (err, foundBook) => {
         res.render("books/edit", {book: foundBook})
     }) 
 })
 
-router.put("/:id", middleware.checkBookOwnership, middleware.bookCoverImageIsAllowed, (req, res) => {
-    delete req.body.book.rating
-    const newData = {title: req.body.title, author: req.body.author, image: req.body.image, synopsis: req.body.synopsis}
-    Book.findByIdAndUpdate(req.params.id, {$set: newData}, (err, updatedBook) => {
+router.put("/:slug", middleware.checkBookOwnership, middleware.bookCoverImageIsAllowed, (req, res) => {
+    // delete req.body.book.rating
+    // const newData = {title: req.body.title, author: req.body.author, image: req.body.image, synopsis: req.body.synopsis}
+    Book.findOne({slug: req.params.slug}, (err, book) => {
         if (err) {
             res.redirect("/books")
         } else {
-            res.redirect("/books/" + req.params.id) 
+            book.title = req.body.title 
+            book.author = req.body.author
+            book.image = req.body.image
+            book.synopsis = req.body.synopsis
+            book.save(err => {
+                if(err) {
+                    console.log(err)
+                    res.redirect("/books")
+                } else {
+                    res.redirect("/books/" + book.slug) 
+                }
+            })
         }
     }) 
 })
 
-router.delete("/:id", middleware.checkBookOwnership, (req, res) => {
-    Book.findByIdAndRemove(req.params.id, (err, book) => {
+router.delete("/:slug", middleware.checkBookOwnership, (req, res) => {
+    Book.findOneAndRemove({slug: req.params.slug}, (err, book) => {
         if (err) {
             res.redirect("/books")
         } else {
-            // delete all reviews associated with the book
-            Review.deleteMany({"_id": {$in: book.reviews}}, err => {
+            Comment.deleteMany({"_id": {$in: book.comments}}, err => {
                 if (err) {
                     console.log(err)
                     return res.redirect("/books")
                 }
-                book.remove() 
-                req.flash("success", "Book Removed")
-                res.redirect("/books") 
+                Review.deleteMany({"_id": {$in: book.reviews}}, err => {
+                    if (err) {
+                        console.log(err);
+                        return res.redirect("/books")
+                    }
+                    book.remove();
+                    req.flash("success", "Book removed")
+                    res.redirect("/books")
+                })
             })
         }
     })
 })
 
-router.post("/:id/like", middleware.isLoggedIn, (req, res) => {
-    Book.findById(req.params.id, (err, foundBook) => {
+router.post("/:slug/like", middleware.isLoggedIn, (req, res) => {
+    Book.findOne({slug: req.params.slug}, (err, foundBook) => {
         if (err) {
             console.log(err) 
             res.redirect("/books")
@@ -148,7 +165,7 @@ router.post("/:id/like", middleware.isLoggedIn, (req, res) => {
                 console.log(err)
                 res.redirect("/books")
             }
-            res.redirect("/books/" + foundBook._id) 
+            res.redirect("/books/" + foundBook.slug) 
         })
     })
 })

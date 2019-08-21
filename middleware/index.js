@@ -14,7 +14,7 @@ middlewareObj.isLoggedIn = (req, res, next) => {
 
 middlewareObj.checkBookOwnership = (req, res, next) => {
     if (req.isAuthenticated()) {
-        Book.findById(req.params.id, (err, foundBook) => {
+        Book.findOne({slug: req.params.slug}, (err, foundBook) => {
             if (err) {
                 req.flash("error", "Something went wrong...")
                 res.redirect("back")
@@ -56,7 +56,7 @@ middlewareObj.checkReviewOwnership = (req, res, next) => {
 
 middlewareObj.checkReviewExistence = (req, res, next) => {
     if (req.isAuthenticated()) {
-        Book.findById(req.params.id).populate("reviews").exec((err, foundBook) => {
+        Book.findOne({slug: req.params.slug}).populate("reviews").exec((err, foundBook) => {
             if (err || !foundBook) {
                 req.flash("error", "Book not found")
                 res.redirect("back")
@@ -66,7 +66,7 @@ middlewareObj.checkReviewExistence = (req, res, next) => {
                 })
                 if (foundUserReview) {
                     req.flash("error", "You have already written a review for this book")
-                    return res.redirect("/books/" + foundBook._id)
+                    return res.redirect("/books/" + foundBook.slug)
                 }
                 next()
             }

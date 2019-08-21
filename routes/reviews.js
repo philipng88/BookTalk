@@ -16,7 +16,7 @@ const calculateAverage = reviews => {
 }
 
 router.get("/", (req, res) => {
-    Book.findById(req.params.id).populate({
+    Book.findOne({slug: req.params.slug}).populate({
         path: "reviews",
         options: {sort: {createdAt: -1}}
     }).exec((err, book) => {
@@ -29,7 +29,7 @@ router.get("/", (req, res) => {
 })
 
 router.get("/new", middleware.isLoggedIn, middleware.checkReviewExistence, (req, res) => {
-    Book.findById(req.params.id, (err, book) => {
+    Book.findOne({slug: req.params.slug}, (err, book) => {
         if (err) {
             req.flash("error", err.message)
             return res.redirect("back")
@@ -39,7 +39,7 @@ router.get("/new", middleware.isLoggedIn, middleware.checkReviewExistence, (req,
 })
 
 router.post("/", middleware.isLoggedIn, middleware.checkReviewExistence, (req, res) => {
-    Book.findById(req.params.id).populate("reviews").exec((err, book) => {
+    Book.findOne({slug: req.params.slug}).populate("reviews").exec((err, book) => {
         if (err) {
             req.flash("error", err.message)
             return res.redirect("back")
@@ -57,7 +57,7 @@ router.post("/", middleware.isLoggedIn, middleware.checkReviewExistence, (req, r
             book.rating = calculateAverage(book.reviews)
             book.save()
             req.flash("success", "Review added")
-            res.redirect("/books/" + book._id)
+            res.redirect("/books/" + book.slug)
         })
     })
 })
@@ -68,7 +68,7 @@ router.get("/:review_id/edit", middleware.checkReviewOwnership, (req, res) => {
             req.flash("error", err.message)
             return res.redirect("back")
         }
-        res.render("reviews/edit", {book_id: req.params.id, review: foundReview})
+        res.render("reviews/edit", {book_slug: req.params.slug, review: foundReview})
     })
 })
 
@@ -78,7 +78,7 @@ router.put("/:review_id", middleware.checkReviewOwnership, (req, res) => {
             req.flash("error", err.message)
             return res.redirect("back")
         }
-        Book.findById(req.params.id).populate("reviews").exec((err, book) => {
+        Book.findOne({slug: req.params.slug}).populate("reviews").exec((err, book) => {
             if (err) {
                 req.flash("error", err.message)
                 return res.redirect("back")
@@ -86,7 +86,7 @@ router.put("/:review_id", middleware.checkReviewOwnership, (req, res) => {
             book.rating = calculateAverage(book.reviews)
             book.save()
             req.flash("success", "Review edited")
-            res.redirect("/books/" + book._id) 
+            res.redirect("/books/" + book.slug) 
         })
     })
 })
@@ -97,7 +97,7 @@ router.delete("/:review_id", middleware.checkReviewOwnership, (req, res) => {
             req.flash("error", err.message)
             return res.redirect("back")
         }
-        Book.findByIdAndUpdate(req.params.id, {$pull: {reviews: req.params.review_id}}, {new: true}).populate("reviews").exec((err, book) => {
+        Book.findOneAndUpdate({slug: req.params.slug}, {$pull: {reviews: req.params.review_id}}, {new: true}).populate("reviews").exec((err, book) => {
             if (err) {
                 req.flash("error", err.message);
                 return res.redirect("back");
@@ -105,7 +105,7 @@ router.delete("/:review_id", middleware.checkReviewOwnership, (req, res) => {
             book.rating = calculateAverage(book.reviews)
             book.save()
             req.flash("success", "Review deleted")
-            res.redirect("/books/" + req.params.id)
+            res.redirect("/books/" + req.params.slug)
         })
     })
 })

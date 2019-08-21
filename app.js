@@ -20,6 +20,7 @@ const User = require("./models/user")
 const port = process.env.PORT || 3000 
 
 mongoose.connect("mongodb://localhost/book_talk", { useNewUrlParser: true })
+mongoose.set('useCreateIndex', true)
 mongoose.set('useFindAndModify', false) 
 app.use(bodyParser.urlencoded({extended: true}))
 app.set("view engine", "ejs") 
@@ -50,8 +51,8 @@ app.use((req, res, next) => {
 
 app.use(indexRoutes)
 app.use("/books", bookRoutes)
-app.use("/books/:id/reviews", reviewRoutes) 
-app.use("/books/:id/comments", commentRoutes)
+app.use("/books/:slug/reviews", reviewRoutes) 
+app.use("/books/:slug/comments", commentRoutes)
 app.use("/users", userRoutes) 
 
 app.listen(port, () => {
