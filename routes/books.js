@@ -3,6 +3,8 @@ const router = express.Router()
 const Book = require("../models/book")
 const Comment = require("../models/comment")
 const Review = require("../models/review")
+const User = require("../models/user")
+const Notification = require("../models/notification")
 const middleware = require("../middleware")
 
 router.get("/", (req, res) => {
@@ -36,7 +38,7 @@ router.get("/", (req, res) => {
         })
     } else {
         // use .sort({'_id': -1}) for most recent entries first and .sort({'_id': 1}) for oldest entries first 
-        Book.find({}).sort({'_id': 1}).skip((perPage * pageNumber) - perPage).limit(perPage).exec((err, allBooks) => {
+        Book.find({}).sort({'_id': -1}).skip((perPage * pageNumber) - perPage).limit(perPage).exec((err, allBooks) => {
             Book.countDocuments().exec((err, count) => {
                 if (err) {
                     console.log(err)
@@ -54,7 +56,7 @@ router.get("/", (req, res) => {
     }
 })
 
-router.post("/", middleware.isLoggedIn, middleware.bookCoverImageIsAllowed, (req, res) => {
+router.post("/", middleware.isLoggedIn, middleware.bookCoverImageIsAllowed, async function(req, res) {
     const title = req.body.title 
     const author = req.body.author 
     const image = req.body.image 
@@ -64,14 +66,29 @@ router.post("/", middleware.isLoggedIn, middleware.bookCoverImageIsAllowed, (req
         username: req.user.username
     }
     const newBook = {title:title, author:author, image:image, synopsis:synopsis, creator:creator}
-    Book.create(newBook, err => {
-        if (err) {
-            console.log(err)
-        } else {
-            req.flash("success", "Successfully added book!")
-            res.redirect("/books") 
+    // Book.create(newBook, err => {
+    //     if (err) {
+    //         console.log(err)
+    //     } else {
+    //         req.flash("success", "Successfully added book!")
+    //         res.redirect("/books") 
+    //     }
+    // })
+    try {
+        let book = await Book.create(newBook)
+        let user = await User.findById(req.user._id).populate("followers").exec()
+        let newNotification = { username: req.user.username, bookId: book.slug }
+        for(const follower of user.followers) {
+            let notification = await Notification.create(newNotification)
+            follower.notifications.push(notification)
+            follower.save() 
         }
-    })
+        req.flash("success", "Successfully added book!")
+        res.redirect("/books")
+    } catch(err) {
+        req.flash("error", err.message)
+        res.redirect("back")
+    }
 }) 
 
 router.get("/new", middleware.isLoggedIn, (req, res) => {

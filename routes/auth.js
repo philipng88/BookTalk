@@ -1,12 +1,7 @@
-const express = require("express")
+const express = require('express')
 const router = express.Router()
-const passport = require("passport") 
+const passport = require("passport")
 const User = require("../models/user")
-const Book = require("../models/book")
-
-router.get("/", (req, res) => {
-    res.render("landing")
-})
 
 router.get("/register", (req, res) => {
     res.render("register", {page: "register"})  

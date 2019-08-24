@@ -4,20 +4,20 @@ const User = require('../models/user')
 const Book = require('../models/book')
 const middleware = require("../middleware")
 
-router.get("/:id", (req, res) => {
-    User.findById(req.params.id, (err, foundUser) => {
-        if (err) {
-            req.flash("error", "Something went wrong...")
-            res.redirect("/books")
-        }
-        Book.find().where('creator.id').equals(foundUser._id).exec((err, books) => {
-            if (err) {
+router.get("/:id", async function(req, res) {
+    try {
+        let user = await User.findById(req.params.id).populate("followers").exec()
+        Book.find().where("creator.id").equals(user._id).exec(async function(err, books) {
+            if(err) {
                 req.flash("error", "Something went wrong...")
                 res.redirect("/books")
             }
-            res.render("users/show", {user: foundUser, books: books})  
-        }) 
-    })
+            res.render("users/show", {user, books})
+        })
+    } catch(err) {
+        req.flash("error", err.message)
+        return res.redirect("back")
+    }
 })
 
 router.get("/:id/edit", middleware.checkUserProfileOwnership, (req, res) => {
@@ -31,7 +31,11 @@ router.get("/:id/edit", middleware.checkUserProfileOwnership, (req, res) => {
 })
 
 router.put("/:id", middleware.checkUserProfileOwnership, (req, res) => {
-    let newData = {username: req.body.username, profilePicture: req.body.profilePicture, aboutMe: req.body.aboutMe}
+    let newData = {
+        username: req.body.username, 
+        profilePicture: req.body.profilePicture, 
+        aboutMe: req.body.aboutMe, 
+    }
     User.findByIdAndUpdate(req.params.id, {$set: newData}, (err, updatedUser) => {
         if (err) {
             req.flash("error", "Unable to update user profile")

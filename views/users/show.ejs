@@ -9,11 +9,14 @@
                     <h2 class="card-title"><%= user.username %></h2>
                     <p class="card-text"><%= user.aboutMe %></p>
                 </div>
-                <% if (currentUser && (user._id.equals(currentUser._id) || currentUser.isAdmin)) { %>
-                    <div class="card-footer">
+                <div class="card-footer">
+                    <% if (currentUser && (user._id.equals(currentUser._id) || currentUser.isAdmin)) { %>
                         <a href="/users/<%= user._id %>/edit" class="btn btn-info">Edit Profile</a>
-                    </div>
-                <% } %>
+                    <% } %>
+                    <a href="/follow/<%= user.id %>">
+                        <button class="btn btn-primary <% if (currentUser && (user._id.equals(currentUser._id))) { %> d-none <% } %>">Follow</button>
+                    </a>
+                </div>
             </div>
         </div>
         <div class="col-md-8">

@@ -1,0 +1,15 @@
+<% include ../partials/header %> 
+
+<h1>Notifications</h1>
+
+<ul>
+	<% allNotifications.forEach(notification => { %>
+	<li>
+		<a href="/books/<%= notification.bookId %>">
+			<%= notification.username %> added a new book
+		</a>
+	</li>
+	<% }) %>
+</ul>
+
+<% include ../partials/footer %> 
