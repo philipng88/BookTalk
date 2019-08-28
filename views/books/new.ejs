@@ -6,7 +6,7 @@
             <h1>Add a Book</h1>
         </div>
         <div class="form-wrapper w-50">
-            <form action="/books" method="POST">
+            <form action="/books" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="new-book-title">Title</label>
                     <input
@@ -14,7 +14,7 @@
                         class="form-control"
                         id="new-book-title" 
                         type="text" 
-                        name="title" 
+                        name="book[title]" 
                     >
                 </div>
                 <div class="form-group">
@@ -24,23 +24,22 @@
                         class="form-control"
                         id="new-book-author" 
                         type="text" 
-                        name="author" 
+                        name="book[author]" 
                     >
                 </div>
                 <div class="form-group">
-                    <label for="new-book-image-url">Book Image URL</label>
-                    <input
-                        required 
-                        class="form-control" 
-                        id="new-book-image-url"
-                        type="text" 
-                        name="image" 
-                        aria-describedby="image-url-requirements"
-                        pattern="^https:\/\/i\.gr-assets\.com\/images\/S\/.*"
-                    >
-                    <small id="image-url-requirements" class="form-text text-muted">
-                        Only images from <a href="https://goodreads.com/" target="_blank">goodreads.com</a> are accepted
-                    </small>
+                    <label for="new-book-cover-image">Book Cover Image</label>
+                    <div class="custom-file">
+                        <input
+                            required 
+                            class="custom-file-input" 
+                            id="new-book-cover-image"
+                            type="file" 
+                            name="image" 
+                            accept="image/*" 
+                        >
+                        <label for="new-book-cover-image" class="custom-file-label">Choose File</label>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="new-book-synopsis">Synopsis</label>
@@ -49,7 +48,7 @@
                         class="form-control"
                         id="new-book-synopsis" 
                         type="text" 
-                        name="synopsis"
+                        name="book[synopsis]"
                     ></textarea> 
                 </div>
                 <div class="form-group">

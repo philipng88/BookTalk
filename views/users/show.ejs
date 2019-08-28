@@ -13,9 +13,6 @@
                     <% if (currentUser && (user._id.equals(currentUser._id) || currentUser.isAdmin)) { %>
                         <a href="/users/<%= user._id %>/edit" class="btn btn-info">Edit Profile</a>
                     <% } %>
-                    <a href="/follow/<%= user.id %>">
-                        <button class="btn btn-primary <% if (currentUser && (user._id.equals(currentUser._id))) { %> d-none <% } %>">Follow</button>
-                    </a>
                 </div>
             </div>
         </div>

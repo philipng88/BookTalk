@@ -14,7 +14,6 @@ const landingRoutes = require("./routes/landing")
 const reviewRoutes = require("./routes/reviews")
 const commentRoutes = require("./routes/comments")
 const userRoutes = require("./routes/users")
-const notificationRoutes = require("./routes/notifications")
 const authorizationRoutes = require("./routes/auth")
 
 const User = require("./models/user")
@@ -44,16 +43,8 @@ passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
-app.use(async function(req, res, next) {
+app.use((req, res, next) => {
     res.locals.currentUser = req.user 
-    if(req.user) {
-        try {
-            let user = await User.findById(req.user._id).populate("notifications", null, { isRead: false }).exec()
-            res.locals.notifications = user.notifications.reverse()
-        } catch(err) {
-            console.log(err.message) 
-        }
-    }
     res.locals.error = req.flash("error")
     res.locals.success = req.flash("success") 
     next() 
@@ -64,7 +55,6 @@ app.use("/books", bookRoutes)
 app.use("/books/:slug/reviews", reviewRoutes) 
 app.use("/books/:slug/comments", commentRoutes)
 app.use("/users", userRoutes) 
-app.use(notificationRoutes)
 app.use(authorizationRoutes)
 
 app.listen(port, () => {

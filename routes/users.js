@@ -4,20 +4,20 @@ const User = require('../models/user')
 const Book = require('../models/book')
 const middleware = require("../middleware")
 
-router.get("/:id", async function(req, res) {
-    try {
-        let user = await User.findById(req.params.id).populate("followers").exec()
-        Book.find().where("creator.id").equals(user._id).exec(async function(err, books) {
-            if(err) {
-                req.flash("error", "Something went wrong...")
+router.get("/:id", (req, res) => {
+    User.findById(req.params.id, (err, user) => {
+        if (err) {
+            req.flash("error", err.message)
+            res.redirect("/books")
+        }
+        Book.find().where('creator.id').equals(user._id).exec((err, books) => {
+            if (err) {
+                req.flash("error", err.message)
                 res.redirect("/books")
             }
             res.render("users/show", {user, books})
         })
-    } catch(err) {
-        req.flash("error", err.message)
-        return res.redirect("back")
-    }
+    })
 })
 
 router.get("/:id/edit", middleware.checkUserProfileOwnership, (req, res) => {

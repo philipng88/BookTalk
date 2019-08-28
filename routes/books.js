@@ -3,9 +3,30 @@ const router = express.Router()
 const Book = require("../models/book")
 const Comment = require("../models/comment")
 const Review = require("../models/review")
-const User = require("../models/user")
-const Notification = require("../models/notification")
 const middleware = require("../middleware")
+
+const multer = require('multer')
+const cloudinary = require('cloudinary')
+
+// Multer and Cloudinary configuration
+const storage = multer.diskStorage({
+    filename: function(req, file, callback) {
+      callback(null, Date.now() + file.originalname)
+    }
+})
+const imageFilter = function (req, file, callback) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        return callback(new Error('Only image files are allowed!'), false)
+    }
+    callback(null, true)
+}
+const upload = multer({ storage: storage, fileFilter: imageFilter})
+
+cloudinary.config({ 
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 router.get("/", (req, res) => {
     let perPage = 8
@@ -56,40 +77,26 @@ router.get("/", (req, res) => {
     }
 })
 
-router.post("/", middleware.isLoggedIn, middleware.bookCoverImageIsAllowed, async function(req, res) {
-    const title = req.body.title 
-    const author = req.body.author 
-    const image = req.body.image 
-    const synopsis = req.body.synopsis
-    const creator = {
-        id: req.user._id,
-        username: req.user.username
-    }
-    const newBook = {title:title, author:author, image:image, synopsis:synopsis, creator:creator}
-    // Book.create(newBook, err => {
-    //     if (err) {
-    //         console.log(err)
-    //     } else {
-    //         req.flash("success", "Successfully added book!")
-    //         res.redirect("/books") 
-    //     }
-    // })
-    try {
-        let book = await Book.create(newBook)
-        let user = await User.findById(req.user._id).populate("followers").exec()
-        let newNotification = { username: req.user.username, bookId: book.slug }
-        for(const follower of user.followers) {
-            let notification = await Notification.create(newNotification)
-            follower.notifications.push(notification)
-            follower.save() 
+router.post("/", middleware.isLoggedIn, upload.single('image'), (req, res) => {
+    cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
+        if(err) {
+            req.flash("error", err.message)
+            return res.redirect("back")
         }
-        req.flash("success", "Successfully added book!")
-        res.redirect("/books")
-    } catch(err) {
-        req.flash("error", err.message)
-        res.redirect("back")
-    }
-}) 
+        req.body.book.image = result.secure_url
+        req.body.book.imageId = result.public_id
+        req.body.book.creator = { id: req.user._id, username: req.user.username }
+        Book.create(req.body.book, (err, book) => {
+            if (err) {
+                req.flash("error", err.message)
+                return res.redirect("back") 
+            } else {
+                req.flash("success", "Successfully added book!")
+                res.redirect("/books/" + book.slug) 
+            }
+        })
+    }) 
+})
 
 router.get("/new", middleware.isLoggedIn, (req, res) => {
     res.render("books/new")
@@ -114,49 +121,57 @@ router.get("/:slug/edit", middleware.checkBookOwnership, (req, res) => {
     }) 
 })
 
-router.put("/:slug", middleware.checkBookOwnership, middleware.bookCoverImageIsAllowed, (req, res) => {
-    // delete req.body.book.rating
-    // const newData = {title: req.body.title, author: req.body.author, image: req.body.image, synopsis: req.body.synopsis}
-    Book.findOne({slug: req.params.slug}, (err, book) => {
+router.put("/:slug", middleware.checkBookOwnership, upload.single('image'), (req, res) => {
+    Book.findOne({slug: req.params.slug}, async function(err, book) {
         if (err) {
+            req.flash("error", err.message)
             res.redirect("/books")
         } else {
+            if (req.file) {
+                try {
+                    await cloudinary.v2.uploader.destroy(book.imageId)
+                    let result = await cloudinary.v2.uploader.upload(req.file.path)
+                    book.imageId = result.public_id
+                    book.image = result.secure_url
+                } catch(err) {
+                    req.flash("error", err.message)
+                    return res.redirect("back")
+                }
+            }
             book.title = req.body.title 
             book.author = req.body.author
-            book.image = req.body.image
             book.synopsis = req.body.synopsis
-            book.save(err => {
-                if(err) {
-                    console.log(err)
-                    res.redirect("/books")
-                } else {
-                    res.redirect("/books/" + book.slug) 
-                }
-            })
+            book.save()
+            req.flash("success", "Successfully updated book!")
+            res.redirect("/books/" + book.slug) 
         }
     }) 
 })
 
 router.delete("/:slug", middleware.checkBookOwnership, (req, res) => {
-    Book.findOneAndRemove({slug: req.params.slug}, (err, book) => {
+    Book.findOne({slug: req.params.slug}, async function(err, book) {
         if (err) {
-            res.redirect("/books")
-        } else {
+            req.flash("error", err.message)
+            return res.redirect("back")
+        } 
+        try {
+            await cloudinary.v2.uploader.destroy(book.imageId)
             Comment.deleteMany({"_id": {$in: book.comments}}, err => {
                 if (err) {
                     console.log(err)
-                    return res.redirect("/books")
                 }
-                Review.deleteMany({"_id": {$in: book.reviews}}, err => {
-                    if (err) {
-                        console.log(err);
-                        return res.redirect("/books")
-                    }
-                    book.remove();
-                    req.flash("success", "Book removed")
-                    res.redirect("/books")
-                })
-            })
+            })  
+            Review.deleteMany({"_id": {$in: book.reviews}}, err => {
+                if (err) {
+                    console.log(err)
+                }
+            })  
+            book.remove()
+            req.flash("success", "Book removed")
+            res.redirect("/books") 
+        } catch (err) {
+            req.flash("error", err.message)
+            return res.redirect("back") 
         }
     })
 })

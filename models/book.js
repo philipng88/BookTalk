@@ -1,16 +1,14 @@
 const mongoose = require("mongoose")
 
 const bookSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: "Book title cannot be blank"
-    },
+    title: String,
     slug: {
         type: String,
         unique: true
     },
     author: String,
     image: String,
+    imageId: String,
     synopsis: String,
     createdAt: {
         type: Date,
