@@ -30,15 +30,21 @@
                     <small id="password-requirements" class="form-text text-muted">Password must contain at least one number, one uppercase letter, one lowercase letter, and 8 or more characters</small>
                 </div>
                 <div class="form-group input-group">
-                    <!-- value="https://www.searchpng.com/wp-content/uploads/2019/02/Deafult-Profile-Pitcher.png"
-                    readonly -->
+                    <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-envelope"></i></span></div>
+                    <input 
+                        class="form-control font-weight-bold"
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                    >
+                </div>
+                <div class="form-group input-group">
                     <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-camera"></i></span></div>    
                     <input 
                         type="text"
                         class="form-control font-weight-bold profile-picture-url-input"
                         name="profilePicture"
                         placeholder="Profile Picture URL"
-                        disabled
                     >
                 </div>
                 <input type="checkbox" name="admin-option">

@@ -119,13 +119,4 @@ middlewareObj.checkUserProfileOwnership = (req, res, next) => {
     }
 }
 
-middlewareObj.bookCoverImageIsAllowed = (req, res, next) => {
-    if (req.body.image.match(/^https:\/\/i\.gr-assets\.com\/images\/S\/.*/)) {
-        next()
-    } else {
-        req.flash("error", "Only images from goodreads.com are allowed")
-        res.redirect("back") 
-    }
-}
-
 module.exports = middlewareObj

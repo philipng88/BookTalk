@@ -32,7 +32,8 @@ router.get("/:id/edit", middleware.checkUserProfileOwnership, (req, res) => {
 
 router.put("/:id", middleware.checkUserProfileOwnership, (req, res) => {
     let newData = {
-        username: req.body.username, 
+        username: req.body.username,
+        email: req.body.email, 
         profilePicture: req.body.profilePicture, 
         aboutMe: req.body.aboutMe, 
     }
