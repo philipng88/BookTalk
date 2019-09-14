@@ -23,7 +23,7 @@
                     <ul class="list-group list-group-flush">
                         <% books.forEach(book => { %>
                             <li class="list-group-item">
-                                <a href="/books/<%= book.id %>"><%= book.title %></a> <em>by <%= book.author %></em>
+                                <a href="/books/<%= book.slug %>"><%= book.title %></a> <em>by <%= book.author %></em>
                                 <span class="badge badge-secondary badge-pill"><i class="fas fa-thumbs-up"></i> <%= book.likes.length %></span>
                             </li>
                         <% }) %>

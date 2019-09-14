@@ -2,6 +2,7 @@ const mongoose = require("mongoose")
 
 const bookSchema = new mongoose.Schema({
     title: String,
+    series: String,
     slug: {
         type: String,
         unique: true

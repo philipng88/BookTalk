@@ -139,6 +139,7 @@ router.put("/:slug", middleware.checkBookOwnership, upload.single('image'), (req
                 }
             }
             book.title = req.body.title 
+            book.series = req.body.series
             book.author = req.body.author
             book.synopsis = req.body.synopsis
             book.save()

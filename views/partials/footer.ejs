@@ -29,6 +29,12 @@
             let fileName = $(this).val().split("\\").pop()
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName)
         })
+
+        $(document).ready(() => {
+            $('.hamburger').on('click', () => {
+                $('.animated-icon').toggleClass('open')
+            })
+        })
     </script>
     </body>
 </html>

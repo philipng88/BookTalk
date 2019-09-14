@@ -10,23 +10,55 @@
                 
                 <label for="edit-profile-username">Username</label>
                 <div class="form-group input-group">
-                    <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-user"></i></span></div>
-                    <input class="form-control" id="edit-profile-username" type="text" name="username" value="<%= user.username %>">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fas fa-user"></i>
+                        </span>
+                    </div>
+                    <input
+                        required 
+                        class="form-control" 
+                        id="edit-profile-username" 
+                        type="text" 
+                        name="username" 
+                        value="<%= user.username %>"
+                    >
                 </div>
 
                 <label for="edit-profile-email">Email</label>
                 <div class="form-group input-group">
-                    <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-envelope"></i></span></div>
-                    <input type="email" name="email" id="edit-profile-email" class="form-control" value="<%= user.email %>">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                    </div>
+                    <input
+                        required 
+                        type="email" 
+                        name="email" 
+                        id="edit-profile-email" 
+                        class="form-control" 
+                        value="<%= user.email %>"
+                    >
                 </div>
 
-                <label for="edit-profile-profile-picture">Profile Picture URL</label>
+                <label for="edit-profile-profile-picture">Profile Picture URL (<em>optional</em>)</label>
                 <div class="form-group input-group">
-                    <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-camera"></i></span></div>
-                    <input class="form-control" id="edit-profile-profile-picture" type="text" name="profilePicture" value="<%= user.profilePicture %>">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fas fa-camera"></i>
+                        </span>
+                    </div>
+                    <input 
+                        class="form-control" 
+                        id="edit-profile-profile-picture" 
+                        type="text" 
+                        name="profilePicture" 
+                        value="<%= user.profilePicture %>"
+                    >
                 </div>
 
-                <label for="edit-profile-about-me">About Me</label>
+                <label for="edit-profile-about-me">About Me (<em>optional</em>)</label>
                 <div class="form-group">
                     <textarea class="form-control" id="edit-profile-about-me" name="aboutMe" rows="7"><%= user.aboutMe %></textarea>
                 </div>

@@ -46,10 +46,6 @@ input[type="checkbox"]:checked ~ .reveal-if-active {
     cursor: zoom-in;
 }
 
-.profile-picture-url-input:hover {
-    cursor: not-allowed;
-} 
-
 input:focus::-webkit-input-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; }
 input:focus:-moz-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; } /* FF 4-18 */
 input:focus::-moz-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; } /* FF 19+ */

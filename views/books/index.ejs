@@ -15,9 +15,9 @@
                     </div>
                 </form>
             </p>
-            <p>
-                <a class="btn btn-primary btn-lg" href="/books/new">Add a Book</a>
-            </p>
+            <% if(currentUser) { %>
+                <p><a class="btn btn-primary btn-lg" href="/books/new">Add a Book</a></p>
+            <% } %> 
         </div>
     </header>
 
