@@ -8,7 +8,7 @@
         <div class="form-wrapper w-50">
             <form action="/books/<%= book.slug %>?_method=PUT" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="edit-book-title">Title</label>
+                    <label for="edit-book-title">Title*</label>
                     <input
                         required 
                         class="form-control" 
@@ -18,18 +18,33 @@
                         value="<%= book.title %>"
                     >
                 </div>
-                <div class="form-group">
-                    <label for="edit-book-series">Series (<em>optional</em>)</label>
-                    <input
-                        class="form-control" 
-                        id="edit-book-series"
-                        type="text" 
-                        name="series" 
-                        value="<%= book.series %>"
-                    >
+                <div class="form-row">
+                    <div class="form-group col-md-10">
+                        <label for="edit-book-series">Series Title</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="edit-book-series"
+                            name="series"
+                            value="<%= book.series %>"
+                        >
+                    </div>
+                    <div class="form-group col">
+                        <label for="edit-book-series-number">Series #</label>
+                        <input 
+                            type="number" 
+                            min="1"
+                            max="150"
+                            step="1"
+                            class="form-control" 
+                            id="edit-book-series-number"
+                            name="seriesNumber"
+                            value="<%= book.seriesNumber %>"
+                        >
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="edit-book-author">Author</label>
+                    <label for="edit-book-author">Author*</label>
                     <input
                         required 
                         class="form-control" 
@@ -40,7 +55,7 @@
                     >
                 </div>
                 <div class="form-group">
-                    <label for="edit-book-cover-image">Book Cover Image</label>
+                    <label for="edit-book-cover-image">Book Cover Image*</label>
                     <div class="custom-file">
                         <input
                             required 
@@ -54,7 +69,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="edit-book-synopsis">Synopsis (<em>optional</em>)</label>
+                    <label for="edit-book-synopsis">Synopsis</label>
                     <textarea 
                         rows="5"
                         class="form-control"
@@ -63,6 +78,7 @@
                         name="synopsis" 
                     ><%= book.synopsis %></textarea>
                 </div>
+                <p class="text-muted">Fields marked with * are required</p>
                 <div class="form-group">
                     <button class="btn btn-lg btn-default btn-block btn-primary">Submit</button>
                 </div>

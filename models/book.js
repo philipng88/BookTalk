@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 const bookSchema = new mongoose.Schema({
     title: String,
     series: String,
+    seriesNumber: Number,
     slug: {
         type: String,
         unique: true

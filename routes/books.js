@@ -58,7 +58,6 @@ router.get("/", (req, res) => {
             })
         })
     } else {
-        // use .sort({'_id': -1}) for most recent entries first and .sort({'_id': 1}) for oldest entries first 
         Book.find({}).sort({'_id': -1}).skip((perPage * pageNumber) - perPage).limit(perPage).exec((err, allBooks) => {
             Book.countDocuments().exec((err, count) => {
                 if (err) {
@@ -78,7 +77,7 @@ router.get("/", (req, res) => {
 })
 
 router.post("/", middleware.isLoggedIn, upload.single('image'), (req, res) => {
-    cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
+    cloudinary.v2.uploader.upload(req.file.path, { moderation: "webpurify" }, (err, result) => {
         if(err) {
             req.flash("error", err.message)
             return res.redirect("back")
@@ -95,6 +94,7 @@ router.post("/", middleware.isLoggedIn, upload.single('image'), (req, res) => {
                 res.redirect("/books/" + book.slug) 
             }
         })
+        console.log(result) 
     }) 
 })
 
@@ -140,6 +140,7 @@ router.put("/:slug", middleware.checkBookOwnership, upload.single('image'), (req
             }
             book.title = req.body.title 
             book.series = req.body.series
+            book.seriesNumber = req.body.seriesNumber
             book.author = req.body.author
             book.synopsis = req.body.synopsis
             book.save()

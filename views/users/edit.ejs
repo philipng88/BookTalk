@@ -6,7 +6,7 @@
             <h1>Edit Profile</h1>
         </div>
         <div class="form-wrapper" style="width: 35%;">
-            <form action="/users/<%= user.id %>?_method=PUT" method="POST">
+            <form action="/users/<%= user.id %>?_method=PUT" method="POST" enctype="multipart/form-data">
                 
                 <label for="edit-profile-username">Username</label>
                 <div class="form-group input-group">
@@ -42,7 +42,7 @@
                     >
                 </div>
 
-                <label for="edit-profile-profile-picture">Profile Picture URL (<em>optional</em>)</label>
+                <label for="edit-profile-profile-picture">Profile Picture URL</label>
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text">
@@ -57,8 +57,26 @@
                         value="<%= user.profilePicture %>"
                     >
                 </div>
+                <!-- <label for="profilePicture">Profile Picture</label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="fas fa-camera"></i>
+                        </span>
+                    </div>
+                    <div class="custom-file">
+                        <input 
+                            type="file" 
+                            name="profilePicture" 
+                            class="custom-file-input" 
+                            id="profilePicture" 
+                            accept="image/*"
+                        >
+                        <label for="profilePicture" class="custom-file-label">example.jpg</label>
+                    </div>
+                </div> -->
 
-                <label for="edit-profile-about-me">About Me (<em>optional</em>)</label>
+                <label for="edit-profile-about-me">About Me</label>
                 <div class="form-group">
                     <textarea class="form-control" id="edit-profile-about-me" name="aboutMe" rows="7"><%= user.aboutMe %></textarea>
                 </div>

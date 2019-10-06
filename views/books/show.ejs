@@ -18,8 +18,10 @@
         <div class="col-lg-9">
             <div id="book-info">
                 <h2><%= book.title %></h2>
-                <h4><%= book.series %></h4>
-                <h5><%= book.author %></h5>
+                <% if (book.series !== '') { %>
+                    <h4 class="text-muted">(<%= book.series %> #<%= book.seriesNumber %>)</h4>
+                <% } %>
+                <h5><em>by</em> <%= book.author %></h5>
                 <p class="lead"><%= book.synopsis %></p>
                 <p>
                     <em>Submitted by </em><a href="/users/<%= book.creator.id %>"><%= book.creator.username %></a>, <%= moment(book.createdAt).fromNow() %>

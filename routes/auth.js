@@ -13,7 +13,7 @@ router.get("/register", (req, res) => {
 router.post("/register", (req, res) => {
     const newUser = new User({
         username: req.body.username, 
-        profilePicture: req.body.profilePicture, 
+        profilePicture: 'https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg', 
         aboutMe: req.body.aboutMe
     })
     if (req.body.adminCode === process.env.ADMIN_CODE) {
@@ -75,15 +75,15 @@ router.post("/forgot", (req, res, next) => {
         },
         (token, user, done) => {
             let smtpTransport = nodemailer.createTransport({
-                service: "Gmail",
+                service: "Zoho",
                 auth: {
-                    user: process.env.GMAIL,
-                    pass: process.env.GMAILPW
+                    user: process.env.ZOHO,
+                    pass: process.env.ZOHOPW
                 }
             })
             let mailOptions = {
                 to: user.email,
-                from: process.env.GMAIL,
+                from: { name: 'BookTalk Support', address: process.env.ZOHO },
                 subject: "BookTalk Password Reset",
                 text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                 'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
@@ -138,15 +138,15 @@ router.post("/reset/:token", (req, res) => {
         },
         (user, done) => {
             let smtpTransport = nodemailer.createTransport({
-                service: "Gmail",
+                service: "Zoho",
                 auth: {
-                    user: process.env.GMAIL,
-                    pass: process.env.GMAILPW 
+                    user: process.env.ZOHO,
+                    pass: process.env.ZOHOPW 
                 }
             })
             let mailOptions = {
                 to: user.email,
-                from: process.env.GMAIL,
+                from: { name: 'BookTalk Support', address: process.env.ZOHO },
                 subject: "Your password has been changed",
                 text: "Hello,\n\n" + "This is a confirmation that the password for the account at " + user.email + " has just been changed.\n"
             }
