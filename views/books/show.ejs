@@ -36,14 +36,14 @@
                 </p>
                 <% if (currentUser && (book.creator.id.equals(currentUser._id) || currentUser.isAdmin)) { %>
                     <p style="display: inline;">
-                        <a class="btn btn-sm btn-info" href="/books/<%= book.slug %>/edit">Edit Book Listing</a>
+                        <a class="btn btn-sm btn-info" href="/books/<%= book.slug %>/edit"><i class="fas fa-edit"></i> Edit</a>
                         <form 
                             class="d-inline" 
                             action="/books/<%= book.slug %>?_method=DELETE" 
                             method="POST"
                             onsubmit="return confirm('Are you sure you want to delete this book?')"
                         >
-                            <button class="btn btn-sm btn-danger">Delete Book Listing</button>
+                            <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Delete</button>
                         </form>
                     </p>
                 <% } %>

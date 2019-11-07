@@ -23,7 +23,7 @@ const User = require("./models/user")
 
 const port = process.env.PORT || 3000 
 
-mongoose.connect("mongodb://localhost/book_talk", { useNewUrlParser: true })
+mongoose.connect("mongodb://localhost/book_talk", { useNewUrlParser: true, useUnifiedTopology: true })
 mongoose.set('useCreateIndex', true)
 mongoose.set('useFindAndModify', false) 
 app.use(bodyParser.urlencoded({extended: true}))

@@ -37,8 +37,8 @@ router.get("/", (req, res) => {
     }
     if (req.query.search) {
         const regex = new RegExp(escapeRegex(req.query.search), 'gi')
-        Book.find({title: regex}).sort({'_id': -1}).skip((perPage * pageNumber) - perPage).limit(perPage).exec((err, allBooks) => {
-            Book.countDocuments({title: regex}).exec((err, count) => {
+        Book.find({$or:[{title: regex}, {series: regex}, {author: regex}]}).sort({'_id': -1}).skip((perPage * pageNumber) - perPage).limit(perPage).exec((err, allBooks) => {
+            Book.countDocuments({$or:[{title: regex}, {series: regex}, {author: regex}]}).exec((err, count) => {
                 if (err) {
                     console.log(err)
                     res.redirect("back")
