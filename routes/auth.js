@@ -7,13 +7,13 @@ const crypto = require("crypto")
 const User = require("../models/user")
 
 router.get("/register", (req, res) => {
-    res.render("register", {page: "register"})  
+    res.render("auth/register", {page: "register"})  
 })
 
 router.post("/register", (req, res) => {
     const newUser = new User({
         username: req.body.username, 
-        profilePicture: 'https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg', 
+        profilePicture: 'https://res.cloudinary.com/drdl6xiiu/image/upload/v1574025347/default-profile-picture_hupjzr.jpg', 
         aboutMe: req.body.aboutMe
     })
     if (req.body.adminCode === process.env.ADMIN_CODE) {
@@ -32,7 +32,7 @@ router.post("/register", (req, res) => {
 })
 
 router.get("/login", (req, res) => {
-    res.render("login", {page: "login"})  
+    res.render("auth/login", {page: "login"})  
 })
 
 router.post("/login", passport.authenticate("local", {
@@ -49,7 +49,7 @@ router.get("/logout", (req, res) => {
 })
 
 router.get("/forgot", (req, res) => {
-    res.render("forgot")
+    res.render("auth/forgot")
 })
 
 router.post("/forgot", (req, res, next) => {
@@ -108,7 +108,7 @@ router.get("/reset/:token", (req, res) => {
             req.flash("error", "Password reset token is invalid or has expired")
             return res.redirect("/forgot")
         }
-        res.render("reset", {token: req.params.token})
+        res.render("auth/reset", {token: req.params.token})
     })
 })
 
