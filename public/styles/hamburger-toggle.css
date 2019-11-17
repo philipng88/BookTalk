@@ -1,5 +1,5 @@
-.hamburger {
-    border-color: transparent !important;
+.navbar .hamburger {
+    border-color: transparent;
 }
 
 .hamburger:focus {

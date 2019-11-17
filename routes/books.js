@@ -4,29 +4,8 @@ const Book = require("../models/book")
 const Comment = require("../models/comment")
 const Review = require("../models/review")
 const middleware = require("../middleware")
-
-const multer = require('multer')
-const cloudinary = require('cloudinary')
-
-// Multer and Cloudinary configuration
-const storage = multer.diskStorage({
-    filename: function(req, file, callback) {
-      callback(null, Date.now() + file.originalname)
-    }
-})
-const imageFilter = function (req, file, callback) {
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
-        return callback(new Error('Only image files are allowed!'), false)
-    }
-    callback(null, true)
-}
-const upload = multer({ storage: storage, fileFilter: imageFilter})
-
-cloudinary.config({ 
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
-    api_key: process.env.CLOUDINARY_API_KEY, 
-    api_secret: process.env.CLOUDINARY_API_SECRET
-})
+const upload = require("../config/multer")
+const cloudinary = require("../config/cloudinary")
 
 router.get("/", (req, res) => {
     let perPage = 8
