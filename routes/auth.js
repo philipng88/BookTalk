@@ -16,9 +16,7 @@ router.post("/register", (req, res) => {
         profilePicture: 'https://res.cloudinary.com/drdl6xiiu/image/upload/v1574025347/default-profile-picture_hupjzr.jpg', 
         aboutMe: req.body.aboutMe
     })
-    if (req.body.adminCode === process.env.ADMIN_CODE) {
-        newUser.isAdmin = true
-    }
+    
     User.register(newUser, req.body.password, (err, user) => {
         if (err) {
             req.flash("error", err.message)

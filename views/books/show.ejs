@@ -1,4 +1,4 @@
-<% include ../partials/header %>
+<%- include("../partials/header") %>
 
 <div class="container">
     <div class="row">
@@ -22,9 +22,16 @@
                     <h4 class="text-muted">(<%= book.series %> #<%= book.seriesNumber %>)</h4>
                 <% } %>
                 <h5><em>by</em> <%= book.author %></h5>
-                <p class="lead"><%= book.synopsis %></p>
+                <p class="lead">
+                    <% if (book.synopsis !== '') { %>
+                        <%= book.synopsis %>
+                    <% } else { %>
+                        No synopsis...
+                    <% } %>
+                </p>
                 <p>
-                    <em>Submitted by </em><a href="/users/<%= book.creator.id %>"><%= book.creator.username %></a>, <%= moment(book.createdAt).fromNow() %>
+                    <!-- <em>Submitted by </em><a href="/users/<%= book.creator.id %>"><%= book.creator.username %></a>, <%= moment(book.createdAt).fromNow() %> -->
+                    <em>Added <%= moment(book.createdAt).fromNow() %></em>
                 </p>
                 <p>
                     Current book rating: <% if (book.rating === 0) { %>
@@ -34,8 +41,8 @@
                         <span class="font-weight-bold"><%= book.rating.toFixed(2) %> / 5.00</span>
                     <% } %> 
                 </p>
-                <% if (currentUser && (book.creator.id.equals(currentUser._id) || currentUser.isAdmin)) { %>
-                    <p style="display: inline;">
+                <% if (currentUser && currentUser.isAdmin) { %>
+                    <p class="d-inline">
                         <a class="btn btn-sm btn-info" href="/books/<%= book.slug %>/edit"><i class="fas fa-edit"></i> Edit</a>
                         <form 
                             class="d-inline" 
@@ -87,7 +94,7 @@
                 </div>
                 <div class="card-body">
                     <div class="collapse" id="collapseComment">
-                        <div class="card comment-well-new p-2 mb-3">
+                        <div class="card p-2 mb-3" style="border-left: 5px solid #00c851;">
                             <% if(!currentUser) { %>
                                 <div>
                                     <i class="fas fa-exclamation-triangle text-danger"></i> You must be logged in to comment.<br>
@@ -139,7 +146,7 @@
                                         </form>
                                     </div> 
                                     <div class="collapse" id="collapseEdit<%= comment._id %>">
-                                        <div class="card comment-well-edit p-2 my-3"> 
+                                        <div class="card p-2 my-3" style="border-left: 5px solid #ffbb33;"> 
                                             <h4>Edit comment</h4>
                                             <form id="edit-comment-form<%= comment._id %>" action="/books/<%= book.slug %>/comments/<%= comment._id %>?_method=PUT" method="POST">
                                                 <div class="form-group">
@@ -240,4 +247,4 @@
     </div>
 </div>
 
-<% include ../partials/footer %>
+<%- include("../partials/footer") %>

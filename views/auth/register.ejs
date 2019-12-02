@@ -1,4 +1,4 @@
-<% include ../partials/header %>
+<%- include("../partials/header") %>
 <div class="container">
     <div class="row">
         <div class="col-md-12 text-center">
@@ -38,17 +38,6 @@
                         placeholder="Enter Email"
                     >
                 </div>
-                <input type="checkbox" name="admin-option">
-                <label for="admin-option">Sign up with admin privileges</label>
-                <div class="form-group reveal-if-active input-group">
-                    <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-key"></i></span></div>
-                    <input 
-                        class="form-control font-weight-bold" 
-                        type="password" 
-                        name="adminCode" 
-                        placeholder="Enter Admin Code"
-                    /> 
-                </div>
                 <div class="form-group">
                     <textarea 
                         class="form-control" 
@@ -65,4 +54,4 @@
         </div>
     </div>
 </div>
-<% include ../partials/footer %> 
+<%- include("../partials/footer") %> 

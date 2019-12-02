@@ -15,7 +15,7 @@ router.get("/:id", (req, res) => {
                 req.flash("error", err.message)
                 res.redirect("/books")
             }
-            res.render("users/show", {user, books})
+            res.render("users/show", { user, books, page: "profile" })
         })
     })
 })
@@ -26,24 +26,24 @@ router.get("/:id/edit", middleware.checkUserProfileOwnership, (req, res) => {
             req.flash("error", "Something went wrong...")
             return res.redirect("back")
         }
-        res.render("users/edit", {user: foundUser})
+        res.render("users/edit", { user: foundUser })
     })
 })
 
 router.put("/:id", middleware.checkUserProfileOwnership, (req, res) => {
     let newData = {
         username: req.body.username,
-        email: req.body.email, 
-        profilePicture: req.body.profilePicture, 
-        aboutMe: req.body.aboutMe, 
+        email: req.body.email,
+        profilePicture: req.body.profilePicture,
+        aboutMe: req.body.aboutMe,
     }
-    User.findByIdAndUpdate(req.params.id, {$set: newData}, (err, updatedUser) => {
+    User.findByIdAndUpdate(req.params.id, { $set: newData }, (err, updatedUser) => {
         if (err) {
             req.flash("error", "Unable to update user profile")
             res.redirect("back")
         }
         req.flash("success", "Profile updated")
-        res.redirect("/users/" + req.params.id) 
+        res.redirect("/users/" + req.params.id)
     })
 })
 

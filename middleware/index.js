@@ -12,6 +12,14 @@ middlewareObj.isLoggedIn = (req, res, next) => {
     res.redirect("back") 
 }
 
+middlewareObj.isAdmin = (req, res, next) => {
+    if (req.isAuthenticated() && req.user.isAdmin) {
+        return next()
+    }
+    req.flash("error", "Administrator permissions are required for this action")
+    res.redirect("back")
+}
+
 middlewareObj.checkBookOwnership = (req, res, next) => {
     if (req.isAuthenticated()) {
         Book.findOne({slug: req.params.slug}, (err, foundBook) => {

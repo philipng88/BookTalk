@@ -1,4 +1,4 @@
-<% include ../partials/header %>
+<%- include("../partials/header") %>
 
 <div class="container">
     <header class="jumbotron">
@@ -18,20 +18,24 @@
                     </div>
                 </form>
             </p>
-            <% if(currentUser) { %>
+            <% if(currentUser && currentUser.isAdmin) { %>
                 <p><a class="btn btn-primary btn-lg" href="/books/new">Add a Book</a></p>
+            <% } else { %>
+                <p><a class="btn btn-primary btn-lg" href="/books/request">Request a Book</a></p>
             <% } %> 
         </div>
     </header>
 
-    <div class="row text-center">
+    <div class="row row-cols-md-4 text-center">
         <% books.forEach(book => { %>
-            <div class="col-md-3 col-sm-6 mb-4">
-                <div class="card bg-light">
+            <div class="col mb-4">
+                <div class="card bg-light h-100">
                     <img class="card-img-top" src="<%= book.image %>" alt="Book Cover">
-                    <div class="card-body pb-2">
-                        <h4 class="card-title"><%= book.title %></h4>
-                        <h5 class="card-title"><%= book.author %></h5>
+                    <div class="card-body d-flex justify-content-center align-items-center">
+                        <div>
+                            <p class="card-title h4"><%= book.title %></p>
+                            <p class="card-title h5"><%= book.author %></p>    
+                        </div>
                     </div>
                     <div class="card-footer">
                         <a href="/books/<%= book.slug %>" class="btn btn-primary">More Info</a>
@@ -87,4 +91,4 @@
     </nav>
 </div>
 
-<% include ../partials/footer %>
+<%- include("../partials/footer") %>
