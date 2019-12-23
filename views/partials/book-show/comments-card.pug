@@ -1,0 +1,76 @@
+#comments-card.card.bg-light.mb-3.mt-3
+  .card-header
+    .clearfix
+      h4.font-weight-bold.float-left
+        | Comments 
+        i.fas.fa-comments(aria-hidden="true")
+      a.btn.btn-success.float-right(
+        role="button"
+        data-toggle="collapse"
+        href="#collapseComment"
+        aria-expanded="false"
+        aria-controls="collapseComment"
+      )
+        i.fas.fa-plus(aria-hidden="true")
+        |  Add new comment
+  .card-body
+    #collapseComment.collapse
+      .card.comment-well-add.p-2.mb-3
+        unless currentUser
+          div
+            i.fas.fa-exclamation-triangle.text-danger
+            |  You must be logged in to comment
+            br
+            a(href="/login") Click here
+            |  to log in
+        if currentUser
+          h4 Add comment
+          form#add-comment-form(action=`/books/${book.slug}/comments` method="POST")
+            .form-group
+              textarea.form-control(
+                name="comment[text]"
+                placeholder="Write your comment..."
+                form="add-comment-form"
+                rows="5"
+                cols="70"
+              )
+            .form-group.mb-0
+              button.btn.btn-success.btn-sm Submit
+    if book.comments.length === 0 
+      em No comments yet...
+    each comment in book.comments
+      .row
+        .col-md-12
+          - const commentAddedDate = moment(comment.createdAt).fromNow()
+          span.float-right
+            em #{commentAddedDate}
+          span.font-weight-bold #{comment.author.username}
+          p= comment.text
+          if currentUser && currentUser._id.equals(comment.author.id) || currentUser && currentUser.isAdmin
+            div
+              a.btn.btn-sm.btn-info.mr-1(
+                role="button"
+                data-toggle="collapse"
+                href=`#collapseEdit${comment._id}`
+                aria-expanded="false"
+                aria-controls=`collapse${comment._id}`
+              )
+                | Edit
+              form.d-inline(
+                action=`/books/${book.slug}/comments/${comment._id}?_method=DELETE`
+                method="POST"
+              )
+                button.btn.btn-sm.btn-danger Delete
+            .collapse(id=`collapseEdit${comment._id}`)
+              .card.comment-well-edit.p-2.my-3
+                h4 Edit comment
+                form(
+                  id=`edit-comment-form${comment._id}`
+                  action=`/books/${book.slug}/comments/${comment._id}?_method=PUT`
+                  method="POST"
+                )
+                  .form-group
+                    textarea.form-control(name="comment[text]" form=`edit-comment-form${comment._id}` cols="70" rows="5") #{comment.text}
+                  .form-group.mb-0
+                    button.btn.btn-sm.btn-warning Submit
+          hr

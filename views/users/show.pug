@@ -1,0 +1,17 @@
+extends ../layout
+block content
+  .container
+    .row
+      .col-md-4
+        .card.text-white.bg-secondary
+          img.card-img-top(src=`${user.profilePicture}` alt=`${user.username}'s profile picture`)
+          .card-body
+            p.h2 #{user.username}
+          if currentUser && (user._id.equals(currentUser._id) || currentUser.isAdmin)
+            .card-footer
+              a.btn.btn-info(href=`/users/${user._id}/edit`) Edit Profile
+      .col-md-8
+        .card
+          .card-body
+            p.h3.card-title About Me:
+            p.card-text #{user.aboutMe}

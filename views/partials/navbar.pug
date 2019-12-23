@@ -1,0 +1,40 @@
+nav.navbar.navbar-expand-md.navbar-dark.bg-dark.mb-4
+  a.navbar-brand(href="/") BookTalk
+  button.navbar-toggler.hamburger(
+    type="button" 
+    data-toggle="collapse" 
+    data-target="#navbarCollapse" 
+    aria-controls="navbarCollapse" 
+    aria-expanded="false" 
+    aria-label="Toggle navigation"
+  )
+    .animated-icon
+      span
+      span
+      span
+      span
+  .collapse.navbar-collapse#navbarCollapse
+    ul.navbar-nav.mr-auto
+      li.nav-item(class={active: typeof page !== "undefined" && page === "books"})
+        a.nav-link(href="/books")
+          | Home 
+          i.fas.fa-home
+    ul.navbar-nav.navbar-right
+      if !currentUser
+        li.nav-item(class={active: typeof page !== "undefined" && page === "login"})
+          a.nav-link(href="/login")
+            | Login 
+            i.fas.fa-sign-in-alt
+        li.nav-item(class={active: typeof page !== "undefined" && page === "register"})
+          a.nav-link(href="/register")
+            | Register 
+            i.fas.fa-user-plus
+      else
+        li.nav-item(class={active: typeof page !== "undefined" && page === "profile"})
+          a.nav-link(href=`/users/${currentUser._id}`)
+            | My Profile (#{currentUser.username})
+        li.nav-item
+          a.nav-link(href="/logout")
+            | Logout 
+            i.fas.fa-sign-out-alt
+

@@ -1,0 +1,87 @@
+extends ../layout
+block content
+  .container
+    .row
+      .col-lg-3
+        .sticky-top
+          a.show-page-book-cover(href=`${book.image}` data-toggle="lightbox")
+            img.img-fluid(src=`${book.image}` alt=`Book cover for ${book.title}`)
+          ul#side-nav.list-group.mt-3
+            a.list-group-item.list-group-item-secondary(href="#book-info") Book Info
+            a.list-group-item.list-group-item-secondary.d-flex.justify-content-between.align-items-center(href="#comments-card")
+              | Comments
+              span.badge.badge-dark.badge-pill #{book.comments.length}
+            a.list-group-item.list-group-item-secondary.d-flex.justify-content-between.align-items-center(href="#reviews-card")
+              | Reviews
+              span.badge.badge-dark.badge-pill #{book.reviews.length}
+      .col-lg-9
+        #book-info
+          h2= book.title
+          unless book.series === ''
+            p.h4.text-muted (#{book.series} ##{book.seriesNumber})
+          h5
+            em by
+            |  #{book.author}
+          p.lead
+            if book.synopsis !== ''
+              | #{book.synopsis}
+            else
+              | No synopsis...
+          - const bookAddedDate = moment(book.createdAt).fromNow()
+          p.font-italic Added #{bookAddedDate}
+          p Average book rating: 
+            if book.rating === 0
+              span.font-weight-bold n/a
+            else 
+              span.stars.text-center(data-rating=`${book.rating}` data-num-stars="5")
+              if book.reviews.length > 1
+                span  (#{book.reviews.length} reviews)
+              else
+                span  (1 review)
+          if currentUser && currentUser.isAdmin
+            p.d-inline
+              a.btn.btn-sm.btn-info.mr-1(href=`/books/${book.slug}/edit`)
+                i.fas.fa-edit 
+                |  Edit
+              form.d-inline(action=`/books/${book.slug}?_method=DELETE` method="POST")
+                button.btn.btn-sm.btn-danger
+                  i.fas.fa-trash 
+                  |  Delete
+          .book-like-wrapper
+            form(action=`/books/${book.slug}/like` method="POST")
+              .btn-group
+                - if (currentUser && book.likes.some(like => {
+                  - return like.equals(currentUser._id)
+                - })) {
+                  button.btn.btn-sm.btn-primary
+                    i.fas.fa-thumbs-up
+                    |  Liked (#{book.likes.length})
+                - } else {
+                  button.btn.btn-sm.btn-secondary
+                    i.fas.fa-thumbs-up
+                    |  Like (#{book.likes.length})
+                - }
+                button.btn.btn-sm.btn-info(type="button" data-toggle="modal" data-target="#bookLikes") See who liked this book
+        include ../partials/book-show/comments-card
+        include ../partials/book-show/reviews-card
+  #bookLikes.modal.fade(role="dialog")
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h4.modal-title Book likes: #{book.likes.length}
+          button.close(type="button" data-dismiss="modal")
+            i.fas.fa-times
+        .modal-body
+          table.table.table-striped
+            tbody
+              each like in book.likes
+                tr
+                  td
+                    span.badge
+                      i.fas.fa-user
+                    | #{like.username}
+              if book.likes.length === 0
+                tr
+                  td
+                    | No likes yet 
+                    i.fas.fa-frown

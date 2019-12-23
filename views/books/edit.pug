@@ -1,0 +1,65 @@
+extends ../layout
+block content
+  .container
+    .row
+      .col-md-12.text-center
+        h1
+          | Edit 
+          em= book.title
+      .form-wrapper.w-50
+        form(
+          action=`/books/${book.slug}?_method=PUT` 
+          method="POST" 
+          enctype="multipart/form-data"
+        )
+          .form-group
+            label(for="edit-book-title") Title*
+            input#edit-book-title.form-control(
+              type="text" 
+              name="title" 
+              value=`${book.title}` 
+              required
+            )
+          .form-row
+            .form-group.col-md-10
+              label(for="edit-book-series") Series Title
+              input#edit-book-series.form-control(
+                type="text" 
+                name="series" 
+                value=`${book.series}`
+              )
+            .form-group.col
+              label(for="edit-book-series-number") Series #
+              input#edit-book-series-number.form-control(
+                type="number"
+                min="1"
+                max="150"
+                step="1"
+                name="seriesNumber"
+                value=`${book.seriesNumber}`
+              )
+          .form-group
+            label(for="edit-book-author") Author*
+            input#edit-book-author.form-control(
+              type="text"
+              name="author"
+              value=`${book.author}`
+              required
+            )
+          .form-group
+            label(for="edit-book-cover-image") Book Cover Image*
+            .custom-file
+              input#edit-book-cover-image.custom-file-input(
+                type="file"
+                name="image"
+                accept="image/*"
+                required
+              )
+              label.custom-file-label(for="edit-book-cover-image") Choose File
+          .form-group
+            label(for="edit-book-synopsis") Synopsis
+            textarea#edit-book-synopsis.form-control(name="synopsis" rows="5") #{book.synopsis}
+          p.text-muted Fields marked with an * are required
+          .form-group
+            button.btn.btn-lg.btn-block.btn-primary(type="submit") Save Changes
+        a(href="/books") Cancel

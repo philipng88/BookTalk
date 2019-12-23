@@ -1,0 +1,35 @@
+extends ../layout
+block content
+  .container
+    .row
+      .col-md-12.text-center
+        h1 Request a Book
+        p.h4 Please give as much information as possible
+      .form-wrapper.w-50
+        form
+          .form-group
+            label(for='requested-book-title') Title
+            input#requested-book-title.form-control(required='' type='text' placeholder="Harry Potter and the Sorcerer's Stone")
+          .form-row
+            .form-group.col-md-10
+              label(for='requested-book-series') Series Title
+              input#requested-book-series.form-control(type='text' placeholder='Harry Potter')
+            .form-group.col
+              label(for='requested-book-series-number') Series #
+              input#requested-book-series-number.form-control(type='number' min='1' max='150' step='1' value='1')
+          .form-group
+            label(for='requested-book-author') Author(s)
+            input#requested-book-author.form-control(type='text' placeholder='J.K. Rowling')
+          .form-group
+            label(for='publisher') Publisher
+            input#publisher.form-control(type='text' placeholder='Scholastic Inc.')
+          .form-row
+            .col
+              label(for='isbn10') ISBN10
+              input#isbn10.form-control(type='text' placeholder='0439708184' pattern='^\\d{10}$')
+            .col
+              label(for='isbn13') ISBN13
+              input#isbn13.form-control(type='text' placeholder='9780439708180' pattern='^\\d{13}$')
+          .form-group.mt-3
+            button.btn.btn-lg.btn-block.btn-primary Submit
+        a(href='/books') Cancel

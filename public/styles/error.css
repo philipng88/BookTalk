@@ -1,0 +1,89 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+#notFound {
+  position: relative;
+  height: 100vh;
+}
+
+#notFound .notFoundWrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.notFoundWrapper {
+  max-width: 520px;
+  width: 100%;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.notFoundWrapper .notFound404 {
+  position: relative;
+  height: 240px;
+}
+
+.notFoundWrapper .notFound404 .numbers {
+  font-family: 'Montserrat', sans-serif;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  font-size: 252px;
+  font-weight: 900;
+  margin: 0px;
+  color: #262626;
+  text-transform: uppercase;
+  letter-spacing: -40px;
+  margin-left: -20px;
+}
+
+.notFoundWrapper .notFound404 .numbers span {
+  text-shadow: -8px 0px 0px #fff;
+}
+
+.notFoundWrapper .text {
+  font-family: 'Cabin', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #000;
+  margin-top: 0px;
+  margin-bottom: 25px;
+}
+
+@media only screen and (max-width: 767px) {
+  .notFoundWrapper .notFound404 {
+      height: 200px;
+  }
+  .notFoundWrapper .notFound404 .numbers {
+      font-size: 200px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .notFoundWrapper .notFound404 {
+      height: 162px;
+  }
+  .notFoundWrapper .notFound404 .numbers {
+      font-size: 162px;
+      height: 150px;
+      line-height: 162px;
+  }
+  .notFoundWrapper .text {
+      font-size: 16px;
+  }
+}
+/* This template was made by Colorlib (https://colorlib.com)(https://colorlib.com/etc/404/colorlib-error-404-3/) */

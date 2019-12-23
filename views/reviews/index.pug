@@ -1,0 +1,48 @@
+extends ../layout
+block content
+  .container
+    .row
+      .col-md-12
+        .card
+          .card-header.text-center.h1
+            | Reviews for 
+            em= book.title
+          .card-body
+            if book.rating === 0
+              h5 No reviews yet. Be the first to write a review!
+            else
+              p.h6
+                em Total reviews: #{book.reviews.length}
+              p.h6 Current book rating: 
+                if book.rating === 0
+                  span n/a
+                else
+                  span.stars.text-center(data-rating=`${book.rating}` data-num-stars="5")
+              hr.mt-0
+              each review in book.reviews
+                .row.mb-1
+                  .col-md-3
+                    span!= '<span class="fas fa-star"></span>'.repeat(review.rating)
+                    div
+                      | Review by: 
+                      strong= review.author.username
+                    span
+                      - const reviewUpdatedDate = review.updatedAt.toDateString()
+                      em #{reviewUpdatedDate}
+                    .pt-2
+                      if currentUser && (review.author.id.equals(currentUser._id) || currentUser.isAdmin)
+                        a.btn.btn-sm.btn-info.mr-1(href=`/books/${book.slug}/reviews/${review._id}/edit`) Edit
+                        form.d-inline(action=`/books/${book.slug}/reviews/${review._id}?_method=DELETE` method="POST")
+                          button.btn.btn-sm.btn-danger(type="submit") Delete
+                  .col-md-9
+                    p(style="text-align: justify; word-wrap: break-word;") #{review.text}
+                hr
+            .mt-3
+              a.btn.btn-secondary.mr-1(href=`/books/${book.slug}`)
+                i.fas.fa-arrow-left
+                |  Back
+              a.btn.btn-primary(
+                href=`/books/${book.slug}/reviews/new`
+                class={hide: currentUser && book.reviews.some(review => {return review.author.id.equals(currentUser._id)})}
+              )
+                | Write a Review

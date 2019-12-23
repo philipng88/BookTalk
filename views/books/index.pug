@@ -1,0 +1,44 @@
+extends ../layout
+block content
+  .container
+    header.jumbotron
+      .container
+        h1 
+          i.fas.fa-book-open 
+          |  Welcome to BookTalk!
+        p.h4 Review and discuss all your favorite books!
+        p
+          form(action="/books" method="GET")
+            .input-group.mb-4.book-searchbar
+              .input-group-prepend
+                span.input-group-text.bg-dark.text-white Search
+              input.form-control(
+                type="search"
+                name="search"
+                placeholder="title / author / series"
+                aria-describedby="search-button"
+              )
+              .input-group-append
+                button.btn.btn-info#search-button(type="submit")
+                  i.fas.fa-search
+        if currentUser && currentUser.isAdmin
+          p
+            a.btn.btn-primary.btn-lg(href="/books/new") Add a Book
+        else if currentUser
+          p
+            a.btn.btn-primary.btn-lg(href="/books/request") Request a Book
+        else
+          p
+            a.btn.btn-primary.btn-lg(href="/login") Log In To Request A Book
+    .row.row-cols-md-4.text-center
+      each book in books
+        .col.mb-4
+          .card.bg-light.h-100
+            img.card-img-top(src=`${book.image}` alt=`Book cover for ${book.title}`)
+            .card-body.d-flex.justify-content-center.align-items-center  
+              div
+                p.card-title.h4 #{book.title}
+                p.card-title.h5 #{book.author}
+            .card-footer
+              a.btn.btn-primary(href=`/books/${book.slug}`) More Info
+    include ../partials/pagination

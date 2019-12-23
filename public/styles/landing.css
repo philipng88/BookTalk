@@ -1,0 +1,21 @@
+body {
+  background-color: black;
+}
+
+body::after {
+  background: url("/images/landing-page-background.jpg");
+  background-size: cover;
+  opacity: 0.5;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  content: "";
+}
+
+#landing-header {
+  text-align: center;
+  padding-top: 40vh;
+}

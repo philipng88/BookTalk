@@ -1,0 +1,23 @@
+extends ../layout
+block content
+  .container
+    .row
+      .col-md-12.text-center
+        h1 Log In
+      .form-wrapper(style="width: 30%;")
+        form(action="/login" method="POST")
+          .form-group.input-group
+            .input-group-prepend
+              span.input-group-text
+                i.fas.fa-user
+            input.form-control.font-weight-bold(type="text" name="username" placeholder="Username")
+          .form-group.input-group.mb-1
+            .input-group-prepend
+              span.input-group-text
+                i.fas.fa-lock
+            input.form-control.font-weight-bold(type="password" name="password" placeholder="Password")
+          small
+            a(href="/forgot") Forgot Password?
+          .form-group.mt-1
+            button.btn.btn-lg.btn-primary.btn-block Submit
+        a(href="/books") Cancel

@@ -1,0 +1,44 @@
+#reviews-card.card.bg-light.mb-3
+  .card-header
+    .clearfix
+      if book.rating === 0
+        h4.float-left
+          em No reviews yet...
+        a.btn.btn-success.float-right(href=`/books/${book.slug}/reviews/new`)
+          i.fas.fa-pen
+          |  Write a review
+      else
+        h4.font-weight-bold.float-left Latest Reviews
+        a.btn.btn-success.float-right(
+          class={hide: currentUser && book.reviews.some(review => {return review.author.id.equals(currentUser._id)})} 
+          href=`/books/${book.slug}/reviews/new`
+        )
+          i.fas.fa-pen
+          |  Write a review
+  unless book.reviews.length === 0
+    .card-body
+      each review in book.reviews.slice(0, 5)
+        .row
+          .col-md-3
+            span!= '<span class="fas fa-star"></span>'.repeat(review.rating)
+            div
+              | Review by: 
+              span.font-weight-bold #{review.author.username}
+            span
+              - const reviewUpdatedDate = review.updatedAt.toDateString()
+              em #{reviewUpdatedDate}
+            if currentUser && review.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin
+              .pt-2
+                a.btn.btn-sm.btn-info.mr-1(href=`/books/${book.slug}/reviews/${review._id}/edit`) Edit
+                form.d-inline(action=`/books/${book.slug}/reviews/${review._id}?_method=DELETE` method="POST")
+                  button.btn.btn-sm.btn-danger(type="submit") Delete
+          .col-md-9
+            if review.text !== ''
+              p(style="text-align: justify; word-wrap: break-word;") #{review.text}
+            else
+              p No review content...
+        hr
+  .card-footer
+    a.h5.text-info(href=`/books/${book.slug}/reviews`)
+      i.far.fa-eye(aria-hidden="true")
+      |  See all reviews

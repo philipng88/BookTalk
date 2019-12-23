@@ -19,13 +19,25 @@ a:hover {
     margin: 25px auto;
 }
 
-.checked {
+.fa-star, .fa-star-half {
     color: gold;
 }
 
 .show-page-book-cover:hover {
     cursor: -webkit-zoom-in;
     cursor: zoom-in;
+}
+
+.hide {
+    display: none;
+}
+
+.comment-well-add {
+    border-left: 5px solid #00c851;
+}
+
+.comment-well-edit {
+    border-left: 5px solid #ffbb33;
 }
 
 input:focus::-webkit-input-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; }

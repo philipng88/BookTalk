@@ -1,0 +1,17 @@
+extends ../layout
+block content
+  .container
+    .row
+      .col-md-4.offset-md-4
+        .text-center
+          h3.fas.fa-lock.fa-4x
+          h2.mb-3 Reset Password
+        form(action=`/reset/${token}` method='POST')
+          .form-group
+            label(for='password') New Password
+            input.form-control(type='password' name='password')
+          .form-group
+            label(for='confirm') Confirm Password
+            input.form-control(type='password' name='confirm')
+          .form-group
+            button.btn.btn-primary(type='submit') Submit

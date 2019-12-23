@@ -1,0 +1,39 @@
+extends ../layout
+block content
+  .container
+    .row
+      .col-md-12.text-center
+        h1 Add a Book
+      .form-wrapper.w-50
+        form(action="/books" method="POST" enctype="multipart/form-data")
+          .form-group
+            label(for="new-book-title") Title*
+            input#new-book-title.form-control(type="text" name="book[title]" required)
+          .form-row
+            .form-group.col-md-10
+              label(for="new-book-series") Series Title
+              input#new-book-series.form-control(type="text" name="book[series]")
+            .form-group.col
+              label(for="new-book-series-number") Series #
+              input#new-book-series-number.form-control(
+                type="number"
+                min="1"
+                max="150"
+                step="1"
+                name="book[seriesNumber]"
+              )
+          .form-group
+            label(for="new-book-author") Author*
+            input#new-book-author.form-control(type="text" name="book[author]" required)
+          .form-group
+            label(for="new-book-cover-image") Book Cover Image*
+            .custom-file
+              input#new-book-cover-image.custom-file-input(type="file" name="image" accept="image/*" required)
+              label.custom-file-label(for="new-book-cover-image") Choose File
+          .form-group
+            label(for="new-book-synopsis") Synopsis
+            textarea#new-book-synopsis.form-control(name="book[synopsis]" rows="5")
+          p.text-muted Fields marked with an * are required
+          .form-group
+            button.btn.btn-lg.btn-block.btn-primary(type="submit") Submit
+        a(href="/books") Cancel

@@ -1,0 +1,49 @@
+extends ../layout
+block content
+  .container
+    .row
+      .col-md-12.text-center
+        h1 Edit Profile
+      .form-wrapper(style="width: 35%;")
+        form(action=`/users/${user.id}?_method=PUT` method="POST" enctype="multipart/form-data")
+          label(for="edit-profile-username") Username
+          .form-group.input-group
+            .input-group-prepend
+              span.input-group-text
+                i.fas.fa-user
+            input#edit-profile-username.form-control(
+              type="text" 
+              name="username" 
+              value=`${user.username}`
+              required
+            )
+          label(for="edit-profile-email") Email
+          .form-group.input-group
+            .input-group-prepend
+              span.input-group-text
+                i.fas.fa-envelope
+            input#edit-profile-email.form-control(
+              type="email" 
+              name="email" 
+              value=`${user.email}` 
+              required
+            )
+          label(for="edit-profile-picture") Profile Picture
+          .input-group.mb-3
+            .input-group-prepend
+              span#input-group-icon-prepend.input-group-text
+                i.fas.fa-camera
+            .custom-file
+              input#edit-profile-picture.custom-file-input(
+                type="file"
+                name="profilePicture"
+                accept="image/*"
+                aria-describedby="input-group-icon-prepend"
+              )
+              label.custom-file-label(for="edit-profile-picture")
+          label(for="edit-profile-about-me") About Me
+          .form-group
+            textarea#edit-profile-about-me.form-control(name="aboutMe" rows="7") #{user.aboutMe}
+          button.btn.btn-lg.btn-primary.btn-block(type="submit") Submit
+          .form-group.mt-1
+            a(href=`/users/${user.id}`) Cancel

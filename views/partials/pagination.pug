@@ -1,0 +1,48 @@
+nav(aria-label="Page navigation")
+  if pages && pages > 0
+    ul.pagination.justify-content-center
+      if current == 1
+        li.page-item.disabled
+          a.page-link First
+      else 
+        li
+          a.page-link(href="/books") First
+      if current == 1
+        li.page-item.disabled
+          a.page-link
+            i.fas.fa-angle-double-left
+      else 
+        li
+          - let previous = Number(current) - 1
+          a.page-link(href=`/books?page=${previous}`)
+            i.fas.fa-angle-double-left
+      - let i = (Number(current) > 5 ? Number(current) - 4 : 1)
+      if i !== 1
+        li.page-item.disabled    
+          a.page-link ...
+      - for (; i <= (Number(current) + 4) && i <= pages; i++) {
+        if i == current
+          li.active
+            a.page-link #{i}
+        else 
+          li
+            a.page-link(href=`/books?page=${i}`) #{i}
+        if i == Number(current) + 4 && i < pages
+          li.page-item.disabled
+            a.page-link ...
+      - }
+      if current == pages 
+        li.page-item.disabled
+          a.page-link
+            i.fas.fa-angle-double-right
+      else 
+        li
+          - let next = Number(current) + 1
+          a.page-link(href=`/books?page=${next}`)
+            i.fas.fa-angle-double-right
+      if current == pages
+        li.page-item.disabled
+          a.page-link Last
+      else
+        li
+          a.page-link(href=`/books?page=${pages}`) Last
