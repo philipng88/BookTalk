@@ -10,12 +10,12 @@ head
     crossorigin="anonymous"
   )
   link(rel="stylesheet" href="/styles/landing.css")
-
-.container
-  if error && error.length > 0
-    .alert.alert-danger(role="alert") error
-  if success && success.length > 0
-    .alert.alert-success(role="alert") success
-#landing-header
-  h1(style="color: #fff;") Welcome to BookTalk!
-  a.btn.btn-lg.btn-success(href="/books") Browse the Library
+body
+  .container
+    if error && error.length > 0
+      .alert.alert-danger.font-weight-bold(role='alert') #{error}
+    if success && success.length > 0
+      .alert.alert-success.font-weight-bold(role='alert') #{success}
+  #landing-header.d-flex.flex-column.justify-content-center.align-items-center.text-center.position-relative.py-0.px-3.vh-100
+    h1.text-white Welcome to BookTalk!
+    a.h5.text-white.rounded-lg.text-decoration-none.py-2.px-4.mt-1(href="/books") Browse the Library

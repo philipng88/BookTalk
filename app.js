@@ -22,6 +22,7 @@ const authorizationRoutes = require("./routes/auth");
 
 const User = require("./models/user");
 
+const environment = process.env.NODE_ENV || "development";
 const port = process.env.PORT || 3000;
 
 const app = express();
@@ -80,4 +81,5 @@ app.use(errorRoutes);
 
 app.listen(port, () => {
   console.log(`The BookTalk server has started on port ${port}`);
+  console.log(`Running in ${environment} environment`);
 });

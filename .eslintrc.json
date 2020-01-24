@@ -18,6 +18,6 @@
     "prefer-arrow-callback": "warn",
     "prefer-destructuring": "off",
     "prefer-template": "warn",
-    "no-unused-vars": ["warn", { "argsIgnorePattern": "req|res|next|val" }]
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "req|res|next|err|val" }]
   }
 }

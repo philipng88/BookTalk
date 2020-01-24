@@ -17,6 +17,10 @@ block content
                 name="search"
                 placeholder="title / author / series"
                 aria-describedby="search-button"
+                oninvalid="setCustomValidity('Please enter a search value')"
+                oninput="setCustomValidity('')"
+                title=""
+                required
               )
               .input-group-append
                 button.btn.btn-info#search-button(type="submit")
@@ -24,21 +28,22 @@ block content
         if currentUser && currentUser.isAdmin
           p
             a.btn.btn-primary.btn-lg(href="/books/new") Add a Book
-        else if currentUser
-          p
-            a.btn.btn-primary.btn-lg(href="/books/request") Request a Book
         else
           p
-            a.btn.btn-primary.btn-lg(href="/login") Log In To Request A Book
+            a.btn.btn-primary.btn-lg(href="/books/request") Request a Book
     .row.row-cols-md-4.text-center
       each book in books
         .col.mb-4
-          .card.bg-light.h-100
+          .card.text-white.bg-secondary.h-100.home-page-cards
             img.card-img-top(src=`${book.image}` alt=`Book cover for ${book.title}`)
             .card-body.d-flex.justify-content-center.align-items-center  
               div
                 p.card-title.h4 #{book.title}
                 p.card-title.h5 #{book.author}
-            .card-footer
-              a.btn.btn-primary(href=`/books/${book.slug}`) More Info
+              a.stretched-link(href=`/books/${book.slug}`)
     include ../partials/pagination
+append scripts
+  script.
+    const card = document.querySelector(".home-page-cards")
+    card.addEventListener("mouseover", () => card.classList.add("shadow"))
+    card.addEventListener("mouseout", () => card.classList.remove("shadow"))

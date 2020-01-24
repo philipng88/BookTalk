@@ -50,17 +50,10 @@ block content
           .book-like-wrapper
             form(action=`/books/${book.slug}/like` method="POST")
               .btn-group
-                - if (currentUser && book.likes.some(like => {
-                  - return like.equals(currentUser._id)
-                - })) {
-                  button.btn.btn-sm.btn-primary
-                    i.fas.fa-thumbs-up
-                    |  Liked (#{book.likes.length})
-                - } else {
-                  button.btn.btn-sm.btn-secondary
-                    i.fas.fa-thumbs-up
-                    |  Like (#{book.likes.length})
-                - }
+                if currentUser && book.likes.some(like => like.equals(currentUser._id))
+                  button.btn.btn-sm.btn-danger Unlike (#{book.likes.length})
+                else
+                  button.btn.btn-sm.btn-primary Like (#{book.likes.length})
                 button.btn.btn-sm.btn-info(type="button" data-toggle="modal" data-target="#bookLikes") See who liked this book
         include ../partials/book-show/comments-card
         include ../partials/book-show/reviews-card

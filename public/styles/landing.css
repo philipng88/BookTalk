@@ -1,21 +1,26 @@
 body {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   background-color: black;
 }
 
-body::after {
-  background: url("/images/landing-page-background.jpg");
+#landing-header::after {
+  background-image: url("/images/landing-page-background.jpg");
   background-size: cover;
-  opacity: 0.5;
-  position: absolute;
-  z-index: -1;
+  background-position: center;
+  opacity: 0.6;
   top: 0;
-  bottom: 0;
   left: 0;
   right: 0;
+  bottom: 0;
+  position: absolute;
+  z-index: -1;
   content: "";
 }
 
-#landing-header {
-  text-align: center;
-  padding-top: 40vh;
+#landing-header a {
+  background-color: #33c3f0;
+}
+
+#landing-header a:hover {
+  background-color: #1eaedb;
 }

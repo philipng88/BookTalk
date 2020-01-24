@@ -33,6 +33,7 @@
                 form="add-comment-form"
                 rows="5"
                 cols="70"
+                required
               )
             .form-group.mb-0
               button.btn.btn-success.btn-sm Submit
@@ -46,8 +47,8 @@
             em #{commentAddedDate}
           span.font-weight-bold #{comment.author.username}
           p= comment.text
-          if currentUser && currentUser._id.equals(comment.author.id) || currentUser && currentUser.isAdmin
-            div
+          div
+            if currentUser && currentUser._id.equals(comment.author.id)
               a.btn.btn-sm.btn-info.mr-1(
                 role="button"
                 data-toggle="collapse"
@@ -56,21 +57,28 @@
                 aria-controls=`collapse${comment._id}`
               )
                 | Edit
+            if currentUser && currentUser._id.equals(comment.author.id) || currentUser && currentUser.isAdmin
               form.d-inline(
                 action=`/books/${book.slug}/comments/${comment._id}?_method=DELETE`
                 method="POST"
               )
                 button.btn.btn-sm.btn-danger Delete
-            .collapse(id=`collapseEdit${comment._id}`)
-              .card.comment-well-edit.p-2.my-3
-                h4 Edit comment
-                form(
-                  id=`edit-comment-form${comment._id}`
-                  action=`/books/${book.slug}/comments/${comment._id}?_method=PUT`
-                  method="POST"
-                )
-                  .form-group
-                    textarea.form-control(name="comment[text]" form=`edit-comment-form${comment._id}` cols="70" rows="5") #{comment.text}
-                  .form-group.mb-0
-                    button.btn.btn-sm.btn-warning Submit
+              .collapse(id=`collapseEdit${comment._id}`)
+                .card.comment-well-edit.p-2.my-3
+                  h4 Edit comment
+                  form(
+                    id=`edit-comment-form${comment._id}`
+                    action=`/books/${book.slug}/comments/${comment._id}?_method=PUT`
+                    method="POST"
+                  )
+                    .form-group
+                      textarea.form-control(
+                        name="comment[text]" 
+                        form=`edit-comment-form${comment._id}` 
+                        cols="70" 
+                        rows="5"
+                        required
+                      ) #{comment.text}
+                    .form-group.mb-0
+                      button.btn.btn-sm.btn-warning Submit
           hr

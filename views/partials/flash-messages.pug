@@ -1,9 +1,9 @@
 .container
   if error && error.length > 0
-    .alert.alert-danger.alert-dismissible.fade.show.font-weight-bold(role='alert' data-auto-dismiss) #{error}
-      button.close(type='button' data-dismiss='alert')
-        span &times;
+    .alert.alert-danger.alert-dismissible.fade.show.font-weight-bold(role='alert') #{error}
+      button.close(type='button' data-dismiss='alert' aria-label="Close")
+        span(aria-hidden="true") &times;
   if success && success.length > 0
-    .alert.alert-success.alert-dismissible.fade.show.font-weight-bold(role='alert' data-auto-dismiss) #{success}
-      button.close(type='button' data-dismiss='alert')
-        span &times;
+    .alert.alert-success.alert-dismissible.fade.show.font-weight-bold(role='alert') #{success}
+      button.close(type='button' data-dismiss='alert' aria-label="Close")
+        span(aria-hidden="true") &times;

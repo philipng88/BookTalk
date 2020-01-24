@@ -10,7 +10,7 @@
       else
         h4.font-weight-bold.float-left Latest Reviews
         a.btn.btn-success.float-right(
-          class={hide: currentUser && book.reviews.some(review => {return review.author.id.equals(currentUser._id)})} 
+          class=(currentUser && book.reviews.some(review => review.author.id.equals(currentUser._id)) ? "d-none" : "") 
           href=`/books/${book.slug}/reviews/new`
         )
           i.fas.fa-pen
@@ -27,9 +27,10 @@
             span
               - const reviewUpdatedDate = review.updatedAt.toDateString()
               em #{reviewUpdatedDate}
-            if currentUser && review.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin
-              .pt-2
+            .pt-2
+              if currentUser && review.author.id.equals(currentUser._id)
                 a.btn.btn-sm.btn-info.mr-1(href=`/books/${book.slug}/reviews/${review._id}/edit`) Edit
+              if currentUser && review.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin
                 form.d-inline(action=`/books/${book.slug}/reviews/${review._id}?_method=DELETE` method="POST")
                   button.btn.btn-sm.btn-danger(type="submit") Delete
           .col-md-9
@@ -38,7 +39,7 @@
             else
               p No review content...
         hr
-  .card-footer
+  .card-footer(class=(book.reviews.length === 0 ? "d-none" : ""))
     a.h5.text-info(href=`/books/${book.slug}/reviews`)
       i.far.fa-eye(aria-hidden="true")
       |  See all reviews
