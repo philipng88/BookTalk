@@ -1,4 +1,5 @@
 const Book = require("../models/book");
+const BookRequest = require("../models/bookRequest");
 const Comment = require("../models/comment");
 const Review = require("../models/review");
 const cloudinary = require("../utils/cloudinary");
@@ -81,6 +82,59 @@ module.exports = {
 
   getBookRequestPage(req, res) {
     res.render("books/request");
+  },
+
+  getBookRequestsPage(req, res) {
+    BookRequest.find({}, (err, allRequests) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.render("books/requests", {
+          page: "book-requests",
+          bookRequests: allRequests
+        });
+      }
+    });
+  },
+
+  postBookRequest(req, res) {
+    const title = req.body.title;
+    const series = req.body.series;
+    const author = req.body.author;
+    const genre = req.body.genre;
+    const publisher = req.body.publisher;
+    const isbn = req.body.isbn;
+    const requester = { username: req.user.username };
+    const requestedBook = {
+      title,
+      series,
+      author,
+      genre,
+      publisher,
+      isbn,
+      requester
+    };
+    BookRequest.create(requestedBook, (err, book) => {
+      if (err) {
+        req.flash("error", err.message);
+        res.redirect("back");
+      }
+      req.flash("success", "Book request sent!");
+      res.redirect("/books");
+      console.log(book);
+    });
+  },
+
+  deleteBookRequest(req, res) {
+    BookRequest.findByIdAndRemove(req.params.request_id, err => {
+      if (err) {
+        console.log(err);
+        res.redirect("back");
+      } else {
+        req.flash("success", "Request deleted");
+        res.redirect("/books/book-requests");
+      }
+    });
   },
 
   getOneBook(req, res) {

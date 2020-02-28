@@ -51,6 +51,34 @@ a:hover {
     border-left: 5px solid #ffbb33;
 }
 
+#book-request-faqs-accordion button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: bold;
+    color: #004987;
+    padding: 0;
+    text-decoration: none;
+}
+
+.avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    box-shadow: -1px 3px 3px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: -1px 3px 3px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: -1px 3px 3px rgba(0, 0, 0, 0.3);
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+
+#search-input:focus {
+    border-color: #138496;
+}
+
 input:focus::-webkit-input-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; }
 input:focus:-moz-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; } /* FF 4-18 */
 input:focus::-moz-placeholder { transition: opacity 0.3s 0.3s ease; opacity: 0; } /* FF 19+ */

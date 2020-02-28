@@ -11,7 +11,10 @@ const {
   postBook,
   editBook,
   deleteBook,
-  toggleBookLike
+  toggleBookLike,
+  getBookRequestsPage,
+  postBookRequest,
+  deleteBookRequest
 } = require("../controllers/books");
 
 const router = express.Router();
@@ -24,7 +27,14 @@ router.post(
   postBook
 );
 router.get("/new", middleware.isLoggedInAndAdmin, getNewBookPage);
-router.get("/request", middleware.isLoggedIn, getBookRequestPage);
+router.get("/request", middleware.isLoggedInAndUser, getBookRequestPage);
+router.post("/request", middleware.isLoggedInAndUser, postBookRequest);
+router.delete("/:request_id", middleware.isLoggedInAndAdmin, deleteBookRequest);
+router.get(
+  "/book-requests",
+  middleware.isLoggedInAndAdmin,
+  getBookRequestsPage
+);
 router.get("/:slug", getOneBook);
 router.get("/:slug/edit", middleware.isLoggedInAndAdmin, getBookEditPage);
 router.put(

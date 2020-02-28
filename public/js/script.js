@@ -13,11 +13,35 @@ $.fn.stars = function() {
 
 $(() => {
   $(".stars").stars();
+  $('[data-toggle="popover"]').popover();
+  $(".popover-dismiss").popover({ trigger: "focus" });
+  $('[data-toggle="tooltip"]').tooltip();
 });
 
 $(document).on("click", '[data-toggle="lightbox"]', function(event) {
   event.preventDefault();
   $(this).ekkoLightbox();
+});
+
+$("#book-request-faqs-accordion").on(
+  "hide.bs.collapse show.bs.collapse",
+  event => {
+    $(event.target)
+      .prev()
+      .find("i:last-child")
+      .toggleClass("fa-minus fa-plus");
+  }
+);
+
+$("#book-request-faqs-accordion").on("shown.bs.collapse", event => {
+  $("html, body").animate(
+    {
+      scrollTop: $(event.target)
+        .prev()
+        .offset().top
+    },
+    200
+  );
 });
 
 $(".custom-file-input").on("change", function() {

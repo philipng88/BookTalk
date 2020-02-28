@@ -7,30 +7,30 @@ block content
           i.fas.fa-book-open 
           |  Welcome to BookTalk!
         p.h4 Review and discuss all your favorite books!
-        p
-          form(action="/books" method="GET")
-            .input-group.mb-4.book-searchbar
-              .input-group-prepend
-                span.input-group-text.bg-dark.text-white Search
-              input.form-control(
-                type="search"
-                name="search"
-                placeholder="title / author / series"
-                aria-describedby="search-button"
-                oninvalid="setCustomValidity('Please enter a search value')"
-                oninput="setCustomValidity('')"
-                title=""
-                required
-              )
-              .input-group-append
-                button.btn.btn-info#search-button(type="submit")
-                  i.fas.fa-search
+        form.mt-3(action="/books" method="GET")
+          .input-group.mb-4.book-searchbar
+            input.form-control#search-input(
+              type="search"
+              name="search"
+              aria-describedby="search-button"
+              placeholder="Book Search..."
+              oninvalid="setCustomValidity('Please enter a search value')"
+              oninput="setCustomValidity('')"
+              title=""
+              required
+            )
+            .input-group-append
+              button.btn.btn-info#search-button(type="submit")
+                i.fas.fa-search
         if currentUser && currentUser.isAdmin
           p
             a.btn.btn-primary.btn-lg(href="/books/new") Add a Book
-        else
+        else if currentUser && !currentUser.isAdmin
           p
             a.btn.btn-primary.btn-lg(href="/books/request") Request a Book
+        else if !currentUser
+          p
+            a.btn.btn-primary.btn-lg(href="/login") Request a Book
     .row.row-cols-md-4.text-center
       each book in books
         .col.mb-4

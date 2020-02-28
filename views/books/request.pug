@@ -4,32 +4,146 @@ block content
     .row
       .col-md-12.text-center
         h1 Request a Book
-        p.h4 Please give as much information as possible
+        a(href="#book-request-faqs").h6 Questions? See our FAQs below
       .form-wrapper.w-50
-        form
+        form#book-request-form(action="/books/request" method="POST")
           .form-group
-            label(for='requested-book-title') Title
-            input#requested-book-title.form-control(required='' type='text' placeholder="Harry Potter and the Sorcerer's Stone")
-          .form-row
-            .form-group.col-md-10
-              label(for='requested-book-series') Series Title
-              input#requested-book-series.form-control(type='text' placeholder='Harry Potter')
-            .form-group.col
-              label(for='requested-book-series-number') Series #
-              input#requested-book-series-number.form-control(type='number' min='1' max='150' step='1' value='1')
+            label(for="requested-book-title") Title*
+            input#requested-book-title.form-control(
+              type="text" 
+              onblur="checkEmpty('requested-book-title'); toggleButtonStatus()"
+              name="title"
+            )
+            .invalid-feedback This field is required
           .form-group
-            label(for='requested-book-author') Author(s)
-            input#requested-book-author.form-control(type='text' placeholder='J.K. Rowling')
+            label(for="requested-book-author") Author*
+            input#requested-book-author.form-control(
+              type="text" 
+              onblur="checkEmpty('requested-book-author'); toggleButtonStatus()"
+              name="author"
+            )
+            .invalid-feedback This field is required
           .form-group
-            label(for='publisher') Publisher
-            input#publisher.form-control(type='text' placeholder='Scholastic Inc.')
-          .form-row
-            .col
-              label(for='isbn10') ISBN10
-              input#isbn10.form-control(type='text' placeholder='0439708184' pattern='^\\d{10}$')
-            .col
-              label(for='isbn13') ISBN13
-              input#isbn13.form-control(type='text' placeholder='9780439708180' pattern='^\\d{13}$')
+            label(for="requested-book-series") Series
+            input#requested-book-series.form-control(type="text" name="series")
+          .form-group
+            label(for="requested-book-genre") Genre(s)
+            input#requested-book-genre.form-control(type="text" name="genre")
+          .form-group
+            label(for="requested-book-publisher") Publisher
+            input#requested-book-publisher.form-control(type="text" name="publisher")
+          .form-group
+            label(for="requested-book-isbn")
+            | ISBN 
+            a(
+              style="cursor: pointer;"
+              tabindex="0"
+              data-toggle="popover"
+              data-trigger="focus"
+              data-content="The International Standard Book Number (ISBN) is a number consisting of 10 or 13 digits that uniquely identify a book"
+            )
+              i.far.fa-question-circle
+            input#requested-book-isbn.form-control(
+              type="text" 
+              pattern="^[0-9-]*$" 
+              title="Please enter only digits(0-9) and dashes(-)"
+              name="isbn" 
+            )
+          p.text-muted Fields marked with an asterisk(*) are required
           .form-group.mt-3
-            button.btn.btn-lg.btn-block.btn-primary Submit
-        a(href='/books') Cancel
+            button.btn.btn-lg.btn-block.btn-primary#submit-request-btn(type="submit" disabled style="cursor: not-allowed;") Submit
+        a(href="/books") Cancel
+  hr(style="height: 10px; border: 0; box-shadow: 0 10px 10px -10px #8c8c8c inset;")
+  .container.mb-4.mt-4
+    h2#book-request-faqs.text-center Frequently Answered Questions
+    .row
+      .col-md-10.offset-md-1
+        .accordion#book-request-faqs-accordion.mt-3
+          .card
+            .card-header#questionOneHeading
+              .mb-0
+                button.btn.btn-link.collapsed(
+                  type="button" 
+                  data-toggle="collapse" 
+                  data-target="#questionOne" 
+                  aria-expanded="true" 
+                  aria-controls="questionOne"
+                )
+                  | How long will it take for my requested book to appear in the library?
+                  span.fa-stack.fa-sm
+                    i.fas.fa-circle.fa-stack-2x
+                    i.fas.fa-plus.fa-stack-1x.fa-inverse
+            #questionOne.collapse(aria-labelledby="questionOneHeading")
+              .card-body Please allow 3-5 days for us to process your book request.
+          .card
+            .card-header#questionTwoHeading
+              .mb-0
+                button.btn.btn-link.collapsed(
+                  type="button" 
+                  data-toggle="collapse" 
+                  data-target="#questionTwo" 
+                  aria-expanded="true" 
+                  aria-controls="questionTwo"
+                )
+                  | How much information do I need to provide?
+                  span.fa-stack.fa-sm
+                    i.fas.fa-circle.fa-stack-2x
+                    i.fas.fa-plus.fa-stack-1x.fa-inverse
+            #questionTwo.collapse(aria-labelledby="questionTwoHeading")
+              .card-body You must provide at least the title of the book and the author. However, to ensure that we find the correct book, we recommend that you provide as much information as possible.
+          .card
+            .card-header#questionThreeHeading
+              .mb-0
+                button.btn.btn-link.collapsed(
+                  type="button" 
+                  data-toggle="collapse" 
+                  data-target="#questionThree" 
+                  aria-expanded="true" 
+                  aria-controls="questionThree"
+                )
+                  | I requested a book but it was never added to the library. What happened?
+                  span.fa-stack.fa-sm
+                    i.fas.fa-circle.fa-stack-2x
+                    i.fas.fa-plus.fa-stack-1x.fa-inverse
+            #questionThree.collapse(aria-labelledby="questionThreeHeading")
+              .card-body We apologize if this has happened. We may not have been able to fulfill a book request due to receiving inaccurate and/or incomplete information. It could also be the case that the book you requested is already in the library. Finally, we reserve the right to deny any request, at our discretion.
+          .card
+            .card-header#questionFourHeading
+              .mb-0
+                button.btn.btn-link.collapsed(
+                  type="button" 
+                  data-toggle="collapse" 
+                  data-target="#questionFour" 
+                  aria-expanded="true" 
+                  aria-controls="questionFour"
+                )
+                  | Is there a limit to how many books I can request?
+                  span.fa-stack.fa-sm
+                    i.fas.fa-circle.fa-stack-2x
+                    i.fas.fa-plus.fa-stack-1x.fa-inverse
+            #questionFour.collapse(aria-labelledby="questionFourHeading")
+              .card-body Nope. You may request as many books as you would like 🙂
+append scripts
+  script.
+    const checkEmpty = id => {
+      const inputField = document.getElementById(id)
+      if (inputField.value.trim() === "") {
+        inputField.classList.remove("is-valid")
+        inputField.classList.add("is-invalid")
+      } else {
+        inputField.classList.remove("is-invalid")
+        inputField.classList.add("is-valid")
+      }
+    }
+    const toggleButtonStatus = () => {
+      const titleField = document.getElementById("requested-book-title")
+      const authorField = document.getElementById("requested-book-author")
+      const submitRequestBtn = document.getElementById("submit-request-btn")
+      if (titleField.value.trim() === "" || authorField.value.trim() === "") {
+        submitRequestBtn.setAttribute("disabled", "")
+        submitRequestBtn.style.cursor = "not-allowed"
+      } else if (titleField.value.trim() !== "" && authorField.value.trim() !== "") {
+        submitRequestBtn.removeAttribute("disabled")
+        submitRequestBtn.style.cursor = "pointer"
+      }
+    }

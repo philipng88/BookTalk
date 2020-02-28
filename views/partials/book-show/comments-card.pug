@@ -42,11 +42,12 @@
     each comment in book.comments
       .row
         .col-md-12
-          - const commentAddedDate = moment(comment.createdAt).fromNow()
           span.float-right
-            em #{commentAddedDate}
-          span.font-weight-bold #{comment.author.username}
-          p= comment.text
+            em= moment(comment.createdAt).fromNow()
+          div
+            img.avatar(src=`${comment.author.profilePicture}`)
+            span.font-weight-bold  #{comment.author.username}
+          p.pt-1 #{comment.text}
           div
             if currentUser && currentUser._id.equals(comment.author.id)
               a.btn.btn-sm.btn-info.mr-1(

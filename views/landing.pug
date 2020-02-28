@@ -3,19 +3,11 @@ head
   title BookTalk
   meta(charset="utf-8")
   meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
-  link(
-    rel="stylesheet" 
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" 
-    crossorigin="anonymous"
-  )
   link(rel="stylesheet" href="/styles/landing.css")
 body
-  .container
-    if error && error.length > 0
-      .alert.alert-danger.font-weight-bold(role='alert') #{error}
-    if success && success.length > 0
-      .alert.alert-success.font-weight-bold(role='alert') #{success}
-  #landing-header.d-flex.flex-column.justify-content-center.align-items-center.text-center.position-relative.py-0.px-3.vh-100
-    h1.text-white Welcome to BookTalk!
-    a.h5.text-white.rounded-lg.text-decoration-none.py-2.px-4.mt-1(href="/books") Browse the Library
+  if error && error.length > 0
+    #alert-wrapper
+      .alert #{error}
+  #landing-header
+    h1 Welcome to BookTalk!
+    a(href="/books") Browse the Library

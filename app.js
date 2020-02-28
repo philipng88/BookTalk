@@ -13,8 +13,6 @@ const path = require("path");
 const morgan = require("morgan");
 
 const bookRoutes = require("./routes/books");
-const landingRoutes = require("./routes/landing");
-const errorRoutes = require("./routes/error");
 const reviewRoutes = require("./routes/reviews");
 const commentRoutes = require("./routes/comments");
 const userRoutes = require("./routes/users");
@@ -71,13 +69,15 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(landingRoutes);
+app.get("/", (req, res) => res.render("landing"));
 app.use("/books", bookRoutes);
 app.use("/books/:slug/reviews", reviewRoutes);
 app.use("/books/:slug/comments", commentRoutes);
 app.use("/users", userRoutes);
 app.use(authorizationRoutes);
-app.use(errorRoutes);
+app.use((req, res, next) => {
+  res.status(404).render("error");
+});
 
 app.listen(port, () => {
   console.log(`The BookTalk server has started on port ${port}`);

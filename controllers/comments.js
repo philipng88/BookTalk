@@ -24,6 +24,7 @@ module.exports = {
           } else {
             comment.author.id = req.user._id;
             comment.author.username = req.user.username;
+            comment.author.profilePicture = req.user.profilePicture;
             comment.save();
             book.comments.push(comment);
             book.save();

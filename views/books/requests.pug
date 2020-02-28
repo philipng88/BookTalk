@@ -1,0 +1,38 @@
+extends ../layout
+block content
+  h1.text-center Book Requests
+  .table-responsive
+    table#book-requests-table.table.table-hover.text-center.mt-3
+      thead.thead-light
+        tr
+          th(scope="col") Requested By
+          th(scope="col") Date of Request
+          th(scope="col") Title
+          th(scope="col") Author
+          th(scope="col") Series
+          th(scope="col") Genre(s)
+          th(scope="col") Publisher
+          th(scope="col") ISBN
+          th(scope="col") Delete
+      tbody
+        each bookRequest in bookRequests
+          tr
+            td= bookRequest.requester.username
+            td= moment(bookRequest.requestedAt).fromNow()
+            td= bookRequest.title
+            td= bookRequest.author
+            td= bookRequest.series
+            td= bookRequest.genre
+            td= bookRequest.publisher
+            td= bookRequest.isbn
+            td
+              form.delete-request-btn(action=`/books/${bookRequest._id}?_method=DELETE` method="POST")
+                button.btn.btn-sm.btn-danger
+                  i.fas.fa-trash-alt
+append scripts
+  script.
+    document.querySelectorAll('.delete-request-btn').forEach(button => {
+      button.addEventListener('submit', () => {
+        if (!window.confirm('Are you sure you wish to delete this request?')) event.preventDefault() 
+      })
+    })

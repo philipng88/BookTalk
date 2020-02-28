@@ -38,9 +38,22 @@ nav.navbar.navbar-expand-md.navbar-dark.bg-dark.mb-4
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
-              class={active: typeof page !== "undefined" && page === "profile"}
             ) #{currentUser.username}
             .dropdown-menu(aria-labelledby="navbarUserDropdown")
-              a.dropdown-item(href=`/users/${currentUser._id}`) My Profile
-              a.dropdown-item(href="/logout") Logout
+              a.dropdown-item(
+                href=`/users/${currentUser._id}`
+                class={active: typeof page !== "undefined" && page === "profile"}
+              )
+                | My Profile 
+                i.fas.fa-user
+              if currentUser && currentUser.isAdmin
+                a.dropdown-item(
+                  href="/books/book-requests" 
+                  class={active: typeof page !== "undefined" && page === "book-requests"}
+                )
+                  | Book Requests 
+                  i.fas.fa-book
+              a.dropdown-item(href="/logout")
+                | Logout 
+                i.fas.fa-sign-out-alt
 

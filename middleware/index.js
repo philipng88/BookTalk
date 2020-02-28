@@ -14,6 +14,12 @@ middlewareObj.isLoggedIn = (req, res, next) => {
   res.redirect("back");
 };
 
+middlewareObj.isLoggedInAndUser = (req, res, next) => {
+  if (req.isAuthenticated() && !req.user.isAdmin) return next();
+  req.flash("error", "User permissions are required for this action");
+  res.redirect("back");
+};
+
 middlewareObj.isLoggedInAndAdmin = (req, res, next) => {
   if (req.isAuthenticated() && req.user.isAdmin) {
     return next();
